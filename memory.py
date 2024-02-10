@@ -1,4 +1,9 @@
-def parse_file(self, filename):
+
+
+
+
+
+def parse_file(self, filename): #parses the file and creates the dictionary aka our memory
     try:
         with open(filename, 'r') as _data:
             pass

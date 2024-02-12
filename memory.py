@@ -1,7 +1,7 @@
 
 
 
-
+accumulator = 0
 
 def parse_file(self, filename): #parses the file and creates the dictionary aka our memory
     try:
@@ -19,3 +19,11 @@ def write(self, location):
     """Prints a word from the given memory location"""
     print(self.memDict[location])
     # Key should be the second half of a given word? Are we passing that or the full word into a function?
+
+def load(self, location):
+    #moves item from memory into the accumulator
+    accumulator = self.memDict[location]
+
+def store(self, location):
+    #store item in accumulator into a memory location
+    self.memDict[location] = accumulator

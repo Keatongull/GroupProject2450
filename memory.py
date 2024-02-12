@@ -6,7 +6,12 @@ accumulator = 0
 def parse_file(self, filename): #parses the file and creates the dictionary aka our memory
     try:
         with open(filename, 'r') as _data:
-            pass
+            for i, line in enumerate(file):
+                if i < 100:
+                    self.memDict[i] = int(line.strip())
+                else:
+                    print("Warning: Program size exceeds memory capacity. Ignoring additional lines.")
+                    break
     except FileNotFoundError:
         print("file not found")
 

@@ -17,7 +17,7 @@ def parse_file(self, filename): #parses the file and creates the dictionary aka 
 
 def read(self, location):
     """Reads a word from keyboard input then stores that word into memory"""
-    newWord = input("Please enter a word! 4 digit signed int")
+    newWord = input("Please enter a word! 4 digit signed int:\n")
     self.memDict[location] = newWord
 
 def write(self, location):

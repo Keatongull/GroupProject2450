@@ -1,11 +1,12 @@
-print("hello world")
+from memory import Memory
 
-print("test")
+memory = Memory()
 
-print('conflict')
+def main():
+    filename = input("Enter name of file:\n")
+    memory.parse_file(filename)
 
-print("this change was made by Gabe on VS code")
 
-print("Leo changed this?")
 
-print("justus Changed this")
+if __name__ == "__main__":
+    main()

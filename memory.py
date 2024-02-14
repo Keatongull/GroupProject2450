@@ -32,3 +32,4 @@ class memory:
     def store(self, location):
         #store item in accumulator into a memory location
         self.memDict[location] = self.accumulator
+        

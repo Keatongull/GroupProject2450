@@ -1,4 +1,4 @@
-import memory
+from memory import Memory
 
 # unit tests will go here
 

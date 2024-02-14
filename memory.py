@@ -1,4 +1,4 @@
-class memory:
+class Memory:
     def __init__(self) -> None:
         self.memDict = {}
         self.accumulator = 0
@@ -6,7 +6,7 @@ class memory:
     def parse_file(self, filename): #parses the file and creates the dictionary aka our memory
         try:
             with open(filename, 'r') as _data:
-                for i, line in enumerate(file):
+                for i, line in enumerate(filename):
                     if i < 100:
                         self.memDict[i] = int(line.strip())
                     else:
@@ -26,7 +26,7 @@ class memory:
 
     def load(self, location):
         #moves item from memory into the accumulator
-        accumulator = self.memDict[location]
+        self.accumulator = self.memDict[location]
 
     def store(self, location):
         #store item in accumulator into a memory location

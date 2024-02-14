@@ -8,7 +8,7 @@ class Memory:
             with open(filename, 'r') as _data:
                 for i, line in enumerate(_data):
                     if i < 100:
-                        self.memDict[i] = int(line.strip())
+                        self.memDict[str(i)] = line.strip()
                     else:
                         print("Warning: Program size exceeds memory capacity. Ignoring additional lines.")
                         break

@@ -14,10 +14,9 @@ class memory:
                         break
         except FileNotFoundError:
             print("file not found")
-
     def read(self, location):
         """Reads a word from keyboard input then stores that word into memory"""
-        newWord = input("Please enter a word! 4 digit signed int")
+        newWord = input("Please enter a word! 4 digit signed int:\n")
         self.memDict[location] = newWord
 
     def write(self, location):

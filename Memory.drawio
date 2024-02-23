@@ -1,0 +1,32 @@
+<mxfile host="65bd71144e">
+    <diagram id="PJOzXbRdzbiix7M7G-s4" name="Page-1">
+        <mxGraphModel dx="1094" dy="779" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="28" value="&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;Location&amp;nbsp; &amp;nbsp; &amp;nbsp;Operand&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; Accumulator&amp;nbsp;&amp;nbsp;&lt;/span&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;------------------------------------------------&lt;/div&gt;&lt;div&gt;|&amp;nbsp; &amp;nbsp;Mem[00]&amp;nbsp; &amp;nbsp; |&amp;nbsp; &amp;nbsp;Value&amp;nbsp; &amp;nbsp; &amp;nbsp;|&amp;nbsp; &amp;nbsp;NewValue&amp;nbsp; &amp;nbsp; &amp;nbsp;|&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;|&amp;nbsp; &amp;nbsp;Mem[01]&amp;nbsp; &amp;nbsp; |&amp;nbsp; &amp;nbsp;Value&amp;nbsp; &amp;nbsp; &amp;nbsp;|&amp;nbsp; &amp;nbsp;NewValue&amp;nbsp; &amp;nbsp; &amp;nbsp;|&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;.....&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;|&amp;nbsp; &amp;nbsp;Mem[98]&amp;nbsp; &amp;nbsp; |&amp;nbsp; &amp;nbsp;Value&amp;nbsp; &amp;nbsp; &amp;nbsp;|&amp;nbsp; &amp;nbsp;NewValue&amp;nbsp; &amp;nbsp; &amp;nbsp;|&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;|&amp;nbsp; &amp;nbsp;Mem[99]&amp;nbsp; &amp;nbsp; |&amp;nbsp; &amp;nbsp;Value&amp;nbsp; &amp;nbsp; &amp;nbsp;|&amp;nbsp; &amp;nbsp;NewValue&amp;nbsp; &amp;nbsp; &amp;nbsp;|&lt;br&gt;&lt;/div&gt;&lt;div&gt;------------------------------------------------&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="shape=ext;double=1;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+                    <mxGeometry x="620" y="210" width="280" height="280" as="geometry"/>
+                </mxCell>
+                <mxCell id="29" value="&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;Location&amp;nbsp; &amp;nbsp;Operand&amp;nbsp; &amp;nbsp;Accumulator&amp;nbsp;&amp;nbsp;&lt;/span&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;------------------------------------------------&lt;/div&gt;&lt;div&gt;|&amp;nbsp; &amp;nbsp;Mem[00]&amp;nbsp; &amp;nbsp; |&amp;nbsp; &amp;nbsp;Value&amp;nbsp; &amp;nbsp; &amp;nbsp;|&amp;nbsp; &amp;nbsp;Value&amp;nbsp; &amp;nbsp; &amp;nbsp;|&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;|&amp;nbsp; &amp;nbsp;Mem[01]&amp;nbsp; &amp;nbsp; |&amp;nbsp; &amp;nbsp;Value&amp;nbsp; &amp;nbsp; &amp;nbsp;|&amp;nbsp; &amp;nbsp;Value&amp;nbsp; &amp;nbsp; &amp;nbsp;|&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;.....&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;|&amp;nbsp; &amp;nbsp;Mem[98]&amp;nbsp; &amp;nbsp; |&amp;nbsp; &amp;nbsp;Value&amp;nbsp; &amp;nbsp; &amp;nbsp;|&amp;nbsp; &amp;nbsp;Value&amp;nbsp; &amp;nbsp; &amp;nbsp;|&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;|&amp;nbsp; &amp;nbsp;Mem[99]&amp;nbsp; &amp;nbsp; |&amp;nbsp; &amp;nbsp;Value&amp;nbsp; &amp;nbsp; &amp;nbsp;|&amp;nbsp; &amp;nbsp;Value&amp;nbsp; &amp;nbsp; &amp;nbsp;|&lt;br&gt;&lt;/div&gt;&lt;div&gt;------------------------------------------------&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="shape=ext;double=1;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+                    <mxGeometry x="100" y="210" width="280" height="280" as="geometry"/>
+                </mxCell>
+                <mxCell id="30" value="&lt;div style=&quot;text-align: start;&quot;&gt;Before Execution&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;" vertex="1" parent="1">
+                    <mxGeometry x="190" y="170" width="100" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="31" value="After Execution" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=center;" vertex="1" parent="1">
+                    <mxGeometry x="710" y="170" width="100" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="32" value="" style="shape=flexArrow;endArrow=classic;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="29" target="28">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="400" y="450" as="sourcePoint"/>
+                        <mxPoint x="450" y="400" as="targetPoint"/>
+                        <Array as="points"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="33" value="When you call an opperator it will put the value in the accumulator in prep for the arithmatic/command" style="text;strokeColor=none;align=center;fillColor=none;html=1;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+                    <mxGeometry x="380" y="310" width="240" height="30" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

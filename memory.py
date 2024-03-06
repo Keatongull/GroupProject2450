@@ -58,15 +58,13 @@ class Memory:
             if command == "10":
                 # set the memory address that the user input will be set to.
                 self._IOAddress = address
-                #return "read"
-                continue
+                return "read"
             
             # WRITE command
             elif command == "11":
                 # set the memory address for where the output value is.
                 self._IOAddress = address
-                #return "write"
-                continue
+                return "write"
 
             # LOAD command
             elif command == "20":
@@ -125,24 +123,4 @@ class Memory:
                 return "invalid command"
 
         # end instruction loop
-
-
-
-    def read(self, location):
-        """Reads a word from keyboard input then stores that word into memory"""
-        newWord = input("Please enter a word! 4 digit signed int:\n")
-        self._memList[location] = newWord
-
-    def write(self, location):
-        """Prints a word from the given memory location"""
-        print(self._memList[location])
-        # Key should be the second half of a given word? Are we passing that or the full word into a function?
-
-    def load(self, location):
-        # moves item from memory into the accumulator
-        self._accumulator = self._memList[location]
-
-    def store(self, location):
-        # store item in accumulator into a memory location
-        self._memList[location] = self._accumulator
         

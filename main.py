@@ -1,4 +1,5 @@
 from memory import Memory
+from GUI import DataGUI
 
 def main():
 
@@ -15,6 +16,11 @@ def main():
 
     except FileNotFoundError:
         print("file not found")
+
+    root = tk.Tk()
+    app = DataGUI(root)
+    root.geometry("{0}x{1}+0+0".format(root.winfo_screenwidth(), root.winfo_screenheight()))
+    root.mainloop()
     
 
 if __name__ == "__main__":

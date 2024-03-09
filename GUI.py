@@ -8,16 +8,16 @@ class DataGUI:
         self.root.title("Data Table GUI")
         self.memory = Memory([])
 
-        self.left_frame = tk.Frame(self.root)
+        self.left_frame = tk.Frame(self.root, bg='#FFFFFF')
         self.left_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=10, pady=10)
-        self.right_frame = tk.Frame(self.root)
+        self.right_frame = tk.Frame(self.root, bg='#FFFFFF')
         self.right_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=10, pady=10)
 
-        self.data_entry = tk.Text(self.left_frame)
+        self.data_entry = tk.Text(self.left_frame, bg='#FFFFFF')
         self.data_entry.pack(fill=tk.BOTH, expand=True, pady=5)
         self.data_entry.bind("<Return>", self.insert_newline)
 
-        self.buttons_frame = tk.Frame(self.left_frame)
+        self.buttons_frame = tk.Frame(self.left_frame, bg='#4C721D')
         self.buttons_frame.pack(fill=tk.BOTH, expand=True, pady=5)
 
         self.run_button = tk.Button(self.buttons_frame, text="Run", command=self.run, width=17, height=2)
@@ -66,8 +66,4 @@ class DataGUI:
     def insert_newline(self, event):
         self.data_entry.insert(tk.END, "\n")
 
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = DataGUI(root)
-    root.geometry("{0}x{1}+0+0".format(root.winfo_screenwidth(), root.winfo_screenheight()))
-    root.mainloop()
+

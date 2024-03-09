@@ -5,10 +5,8 @@ from memory import Memory
 class DataGUI:
     def __init__(self, root):
         self.root = root
-        self.root.title("Data Table GUI")
-
-        # Create an instance of the Memory class
-        self.memory = Memory([])
+        self.root.title("UVSimulator GUI")
+        self.memory = Memory([])  # Create an instance of the Memory class
 
         # Create frames
         self.left_frame = tk.Frame(self.root)
@@ -16,67 +14,52 @@ class DataGUI:
         self.right_frame = tk.Frame(self.root)
         self.right_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=10, pady=10)
 
-        # Create entry for inputting data
-        self.data_entry = tk.Entry(self.left_frame)
-        self.data_entry.pack(fill=tk.BOTH, expand=True, pady=5)
+        # Create text entry for inputting the program
+        self.program_entry_label = tk.Label(self.left_frame, text="Enter program:")
+        self.program_entry_label.pack(fill=tk.X)
+        self.program_entry = tk.Text(self.left_frame, height=10)
+        self.program_entry.pack(fill=tk.BOTH, padx=5, pady=5)
 
         # Create buttons
         self.buttons_frame = tk.Frame(self.left_frame)
-        self.buttons_frame.pack(fill=tk.BOTH, expand=True, pady=5)
+        self.buttons_frame.pack(fill=tk.X, padx=5, pady=5)
 
-        self.run_button = tk.Button(self.buttons_frame, text="Run", command=self.run, width=17, height=2)
-        self.run_button.grid(row=0, column=0, padx=5, pady=5)
-        self.clear_button = tk.Button(self.buttons_frame, text="Clear", command=self.clear_data, width=17, height=2)
-        self.clear_button.grid(row=0, column=1, padx=5, pady=5)
-        self.import_button = tk.Button(self.buttons_frame, text="Import Code", command=self.import_code, width=17, height=2)
-        self.import_button.grid(row=0, column=2, padx=5, pady=5)
-        self.export_button = tk.Button(self.buttons_frame, text="Export Code", command=self.export_code, width=17, height=2)
-        self.export_button.grid(row=0, column=3, padx=5, pady=5)
-        self.exit_button = tk.Button(self.buttons_frame, text="Exit", command=root.destroy, width=17, height=2)
-        self.exit_button.grid(row=0, column=4, columnspan=2, padx=5, pady=5)
+        self.run_button = tk.Button(self.buttons_frame, text="Run Program", command=self.run_program)
+        self.run_button.pack(side=tk.LEFT, padx=5)
+        self.clear_button = tk.Button(self.buttons_frame, text="Clear Output", command=self.clear_output)
+        self.clear_button.pack(side=tk.LEFT, padx=5)
 
-        # Create data table
-        self.tree = ttk.Treeview(self.right_frame, columns=('Column 1', 'Column 2'), show='headings')
-        self.tree.heading('Column 1', text='Memory 1')
-        self.tree.heading('Column 2', text='Memory 2')
-        self.tree.pack(expand=True, fill=tk.BOTH, padx=20)  # Adding padding on both sides
+        # Create text widget for program output
+        self.output_text = tk.Text(self.right_frame)
+        self.output_text.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
 
-        # Populate data table with initial data
-        self.update_table()
+    def run_program(self):
+        program_text = self.program_entry.get(1.0, tk.END)  # Get program text from the text entry
+        program_lines = program_text.split('\n')
+        self.memory.loadProgramFromLines(program_lines)  # Load program into memory
 
-    def run(self):
-        # Add code to execute here
-        status = self.memory.runInstructions()
-        if status == "halt":
-            # Do something when execution halts
-            pass
+        status = self.memory.runInstructions()  # Run the program
 
-    def clear_data(self):
-        self.memory.clearData()
-        self.update_table()
+        if status == "read":
+            input_value = input("Enter a word: ")
+            self.memory.setInput(input_value)
+        elif status == "write":
+            output_value = self.memory.getOutput()
+            self.output_text.insert(tk.END, output_value + "\n")
+        elif status == "halt":
+            self.output_text.insert(tk.END, "Program halted.\n")
+        elif status == "invalid command":
+            self.output_text.insert(tk.END, "Invalid command.\n")
+        elif status == "memory range error":
+            self.output_text.insert(tk.END, "Memory range error.\n")
+        elif status == "zero division error":
+            self.output_text.insert(tk.END, "Zero division error.\n")
 
-    def import_code(self):
-        # Add code to import code here
-        pass
-
-    def export_code(self):
-        # Add code to export code here
-        pass
-
-    def update_table(self):
-        # Clear existing data in the table
-        for row in self.tree.get_children():
-            self.tree.delete(row)
-        
-        # Populate table with data from memory
-        for i, instruction in enumerate(self.memory._memList):
-            self.tree.insert('', 'end', values=(i, instruction))
+    def clear_output(self):
+        self.output_text.delete(1.0, tk.END)
 
 if __name__ == "__main__":
     root = tk.Tk()
     app = DataGUI(root)
-    
-    # Configure the root window to fit the screen dynamically
     root.geometry("{0}x{1}+0+0".format(root.winfo_screenwidth(), root.winfo_screenheight()))
-    
     root.mainloop()

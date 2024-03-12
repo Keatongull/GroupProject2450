@@ -120,7 +120,7 @@ class Memory:
                 return "halt"
 
             else:
-                return "invalid command"
+                return "invalid command error"
 
         # end instruction loop
         

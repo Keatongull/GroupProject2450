@@ -5,19 +5,34 @@ import tkinter as tk
 from TextFileManager import TextFileManager as TFM
 
 class ViewController:
-    def __init__(self):
-        self.curMemory = Memory([])
-        self.view = DataGUI(tk.Tk())
-        self.fileAddress = None # Will be changed through import button clicked. Is having it set to None by default correct?
+    def __init__(self, view):
+        self.curMemory: Memory = None
+        self.view: DataGUI = view
+        self.fileAddress = None 
 
     def runButtonClicked(self):
         # Runs the program
-        pass
+        # Switch statement and loop, similar to runInstructions. Interacts with both memory and gui
         # TODO:
             # Clear the console
-            # Take text from memory editor text box, not currently implemented?
+            # Take text from memory editor text box
+            # Split text on new lines, turn into string list
             # Create the Memory object and start it running
             # Wait for return status
+    
+        # for line in self.view.tree.get_children():
+        #     for value in self.view.tree.item(line)['values']:
+        #         print(value)
+
+        memList = []
+        if self.fileAddress != None:
+            file = open(self.fileAddress, 'r')
+            for line in file:
+                if len(line.strip()) == 5:
+                    memList.append(line.strip())
+            file.close()
+        print(memList)
+        self.curMemory = Memory(memList)
 
     def importButtonClicked(self):
         # When the import button is clicked this will be called, opens file explorer to select a txt file. Sets our fileAddress
@@ -25,18 +40,23 @@ class ViewController:
 
     def exportButtonClicked(self):
         # Uses exportText from TFM
-        pass # Will reimplement once know where to read data from
+        pass 
+        # Will reimplement once know where to read data from
         # TFM.exportText(self.fileAddress, text) I'm pulling from tree correct?
 
     def outputToConsole(self):
         # Outputs text to console, what exactly is this connected to? Our commands?
+        # Connected to memory while running, getOutput
+        # Append text
         pass
 
-    # More needed???
+root = tk.Tk()
+app = DataGUI(root)
+vController = ViewController(app)
+root.geometry("{0}x{1}+0+0".format(root.winfo_screenwidth(), root.winfo_screenheight()))
 
-test = ViewController()
-test.importButtonClicked()
-print(test.fileAddress)
-
-
-    
+vController.importButtonClicked()
+vController.runButtonClicked()
+app.memory = vController.curMemory
+app.update_table()
+root.mainloop()

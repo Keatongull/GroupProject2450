@@ -1,6 +1,7 @@
 from memory import Memory
 import tkinter as tk
 from GUI import DataGUI
+from controller import ViewController
 
 def main():
 
@@ -20,6 +21,7 @@ def main():
 
     root = tk.Tk()
     app = DataGUI(root)
+    vController = ViewController(app)
     root.geometry("{0}x{1}+0+0".format(root.winfo_screenwidth(), root.winfo_screenheight()))
     root.mainloop()
     

@@ -10,6 +10,17 @@ class ViewController:
         self.view: DataGUI = view
         self.fileAddress = None 
 
+    def _parseFile(self):
+        # Goes through the file from fileAddress and creates our new memory instructions
+        memList = []
+        
+        file = open(self.fileAddress, 'r')
+        for line in file:
+            if len(line.strip()) == 5: # Only take things that are the correct length
+                memList.append(line.strip())
+        file.close()
+        self.curMemory = Memory(memList) # Sets our current memory as this new memory with our instruction list
+
     def runButtonClicked(self):
         # Runs the program
         # Switch statement and loop, similar to runInstructions. Interacts with both memory and gui
@@ -19,20 +30,32 @@ class ViewController:
             # Split text on new lines, turn into string list
             # Create the Memory object and start it running
             # Wait for return status
-    
-        # for line in self.view.tree.get_children():
-        #     for value in self.view.tree.item(line)['values']:
-        #         print(value)
 
-        memList = []
         if self.fileAddress != None:
-            file = open(self.fileAddress, 'r')
-            for line in file:
-                if len(line.strip()) == 5:
-                    memList.append(line.strip())
-            file.close()
-        print(memList)
-        self.curMemory = Memory(memList)
+            self._parseFile()
+        
+        while True:
+            curInstruction = self.curMemory.runInstructions()
+            self.outputToConsole(curInstruction)
+            # print(curInstruction)
+
+            if curInstruction == "memory range error":
+                break
+
+            elif curInstruction == "halt":
+                break
+
+            elif curInstruction == "read":
+                # TODO: Should pause until provided input
+                pass
+
+            elif curInstruction == "write":
+                # TODO: Go fetch the value in the given memory position and print it to console
+                pass
+
+            elif curInstruction == "invalid command error":
+                break
+            
 
     def importButtonClicked(self):
         # When the import button is clicked this will be called, opens file explorer to select a txt file. Sets our fileAddress
@@ -41,14 +64,13 @@ class ViewController:
     def exportButtonClicked(self):
         # Uses exportText from TFM
         pass 
-        # Will reimplement once know where to read data from
+        # TODO: Will reimplement once know where to read data from
         # TFM.exportText(self.fileAddress, text) I'm pulling from tree correct?
 
-    def outputToConsole(self):
-        # Outputs text to console, what exactly is this connected to? Our commands?
-        # Connected to memory while running, getOutput
-        # Append text
-        pass
+    def outputToConsole(self, event):
+        # Outputs text to console
+        self.view.data_entry.insert(tk.END, event)
+        self.view.insert_newline(event)
 
 root = tk.Tk()
 app = DataGUI(root)

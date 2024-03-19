@@ -1,6 +1,5 @@
 from GUI import DataGUI
 from memory import Memory
-from tkinter import filedialog
 import tkinter as tk
 from TextFileManager import TextFileManager as TFM
 
@@ -9,17 +8,6 @@ class ViewController:
         self.curMemory: Memory = None
         self.view: DataGUI = view
         self.fileAddress = None 
-
-    def _parseFile(self):
-        # Goes through the file from fileAddress and creates our new memory instructions
-        memList = []
-        
-        file = open(self.fileAddress, 'r')
-        for line in file:
-            if len(line.strip()) == 5: # Only take things that are the correct length
-                memList.append(line.strip())
-        file.close()
-        self.curMemory = Memory(memList) # Sets our current memory as this new memory with our instruction list
 
     def runButtonClicked(self):
         # Runs the program
@@ -32,7 +20,13 @@ class ViewController:
             # Wait for return status
 
         if self.fileAddress != None:
-            self._parseFile()
+            instructList = TFM.importText(self.fileAddress).splitlines() # instructlist will be a list made from the contents of the imported file
+            # This is really ugly. Iterates through list, making sure each item is the right length, if not we remove it.
+            for i in range(len(instructList)):
+                if len(instructList[i]) != 5:
+                    instructList.pop(i)
+
+            self.curMemory = Memory(instructList)
         
         while True:
             curInstruction = self.curMemory.runInstructions()

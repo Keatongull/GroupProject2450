@@ -25,7 +25,7 @@ class DataGUI:
         self.run_button.grid(row=0, column=0, padx=5, pady=5)
         self.clear_button = tk.Button(self.buttons_frame, text="Clear", command=self.clear_data, width=17, height=2)
         self.clear_button.grid(row=0, column=1, padx=5, pady=5)
-        self.import_button = tk.Button(self.buttons_frame, text="Import Code", command=self.viewController.importButtonClicked, width=17, height=2)
+        self.import_button = tk.Button(self.buttons_frame, text="Open File", command=self.viewController.importButtonClicked, width=17, height=2)
         self.import_button.grid(row=0, column=2, padx=5, pady=5)
         self.save_button = tk.Button(self.buttons_frame, text="Save Code", command=self.viewController.saveButtonClicked, width=17, height=2)
         self.save_button.grid(row=0, column=3, padx=5, pady=5)
@@ -49,7 +49,8 @@ class DataGUI:
         for row in self.memory_tree.get_children():
             self.memory_tree.delete(row)
         
-        for i, instruction in enumerate(values):
+        for i in range(100):
+            instruction = values[i] if i < len(values) else ""
             self.memory_tree.insert('', 'end', values=(i + 1, instruction))
         
 

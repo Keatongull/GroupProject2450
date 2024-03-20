@@ -1,6 +1,7 @@
 from memory import Memory
 import tkinter as tk
 from TextFileManager import TextFileManager as TFM
+# from GUI import DataGUI (this line causes a circular import error)
 
 
 class ViewController:
@@ -21,14 +22,17 @@ class ViewController:
             # Create the Memory object and start it running
             # Wait for return status
 
+        """
         if self.fileAddress != None:
             instructList = TFM.importText(self.fileAddress).splitlines() # instructlist will be a list made from the contents of the imported file
             # This is really ugly. Iterates through list, making sure each item is the right length, if not we remove it.
             for i in range(len(instructList)):
                 if len(instructList[i]) != 5:
                     instructList.pop(i)
-
+        
+                    
             self.current_memory = Memory(instructList)
+        """
         
         while True:
             execution_status = self.current_memory.runInstructions()
@@ -60,10 +64,10 @@ class ViewController:
         if self.file_address == "":
             # the file browser was cancelled
             return
-        code = TFM.importTextFromFile(self.file_address)
-        instructions = code.split('\n')
+        codeText = TFM.importTextFromFile(self.file_address)
+        instructions = codeText.split('\n')
         print(instructions)
-        #self.update_table()
+        self.view.update_memory_tree(instructions)
 
     def saveButtonClicked(self):
         print("save button clicked")
@@ -83,16 +87,3 @@ class ViewController:
         # Outputs text to console
         self.view.data_entry.insert(tk.END, event)
         self.view.insert_newline(event)
-
-"""
-root = tk.Tk()
-app = DataGUI(root)
-vController = ViewController(app)
-root.geometry("{0}x{1}+0+0".format(root.winfo_screenwidth(), root.winfo_screenheight()))
-
-vController.importButtonClicked()
-vController.runButtonClicked()
-app.memory = vController.curMemory
-app.update_table()
-root.mainloop()
-"""

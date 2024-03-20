@@ -2,6 +2,7 @@ from memory_commands import Add, Subtract, Divide, Multiply, BranchNeg, BranchZe
 
 class Memory:
     
+    # requires a string list of commands to initialize
     def __init__(self, instructionList):
         if len(instructionList) > 100:
             raise Exception("instruction list exceeds memory limit")
@@ -10,8 +11,6 @@ class Memory:
         self._memList = ["0"] * 100
         for i in range(len(instructionList)):
             self._memList[i] = instructionList[i]
-
-        #TODO accumulator maybe should be made into an @property and set branch flags when modified
 
         self._accumulator = 0         # integer used for interal computation
         self._instructionPointer = 0  # points to next location in memory to run
@@ -38,7 +37,9 @@ class Memory:
             - zero division error
         """
 
+        # begin loop of memory execution
         while True:
+
             # this check is neccessary if there is no HALT instruction present
             if self._instructionPointer < 0 or self._instructionPointer > 99:
                 return "memory range error"
@@ -88,7 +89,7 @@ class Memory:
                 self._accumulator = Subtract.execute(self._accumulator, int(self._memList[address]))
                 continue
 
-            # DIVID command
+            # DIVIDE command
             elif command == "32":
                 self._accumulator = Divide.execute(self._accumulator, int(self._memList[address]))
                 continue
@@ -122,5 +123,5 @@ class Memory:
             else:
                 return "invalid command error"
 
-        # end instruction loop
+        # end execution loop
         

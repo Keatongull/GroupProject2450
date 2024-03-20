@@ -21,7 +21,6 @@ def main():
 
     root = tk.Tk()
     app = DataGUI(root)
-    vController = ViewController(app)
     root.geometry("{0}x{1}+0+0".format(root.winfo_screenwidth(), root.winfo_screenheight()))
     root.mainloop()
     

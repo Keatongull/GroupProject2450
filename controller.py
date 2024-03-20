@@ -1,27 +1,28 @@
-from GUI import DataGUI
 from memory import Memory
-from tkinter import filedialog
 import tkinter as tk
 from TextFileManager import TextFileManager as TFM
 
+
 class ViewController:
     def __init__(self, view):
-        self.curMemory: Memory = None
-        self.view: DataGUI = view
-        self.fileAddress = None 
+        self.current_memory: Memory = None
+        self.view = view
+        self.file_address = None 
 
     def _parseFile(self):
         # Goes through the file from fileAddress and creates our new memory instructions
         memList = []
         
-        file = open(self.fileAddress, 'r')
+        file = open(self.file_address, 'r')
         for line in file:
             if len(line.strip()) == 5: # Only take things that are the correct length
                 memList.append(line.strip())
         file.close()
-        self.curMemory = Memory(memList) # Sets our current memory as this new memory with our instruction list
+        self.current_memory = Memory(memList) # Sets our current memory as this new memory with our instruction list
 
     def runButtonClicked(self):
+        print("run button clicked")
+        
         # Runs the program
         # Switch statement and loop, similar to runInstructions. Interacts with both memory and gui
         # TODO:
@@ -30,48 +31,62 @@ class ViewController:
             # Split text on new lines, turn into string list
             # Create the Memory object and start it running
             # Wait for return status
-
-        if self.fileAddress != None:
-            self._parseFile()
         
         while True:
-            curInstruction = self.curMemory.runInstructions()
-            self.outputToConsole(curInstruction)
-            # print(curInstruction)
+            execution_status = self.current_memory.runInstructions()
+            print(execution_status)
 
-            if curInstruction == "memory range error":
+            if execution_status == "memory range error":
                 break
 
-            elif curInstruction == "halt":
+            elif execution_status == "halt":
                 break
 
-            elif curInstruction == "read":
+            elif execution_status == "read":
                 # TODO: Should pause until provided input
                 pass
 
-            elif curInstruction == "write":
+            elif execution_status == "write":
                 # TODO: Go fetch the value in the given memory position and print it to console
                 pass
 
-            elif curInstruction == "invalid command error":
+            elif execution_status == "invalid command error":
                 break
             
 
     def importButtonClicked(self):
+        print("import button clicked")
+    
         # When the import button is clicked this will be called, opens file explorer to select a txt file. Sets our fileAddress
-        self.fileAddress = TFM.getFilePathFromBrowser()
+        self.file_address = TFM.getFilePathFromBrowser()
+        if self.file_address == "":
+            # the file browser was cancelled
+            return
+        code = TFM.importTextFromFile(self.file_address)
+        instructions = code.split('\n')
+        print(instructions)
+        #self.update_table()
 
-    def exportButtonClicked(self):
-        # Uses exportText from TFM
-        pass 
+    def saveButtonClicked(self):
+        print("save button clicked")
+    
         # TODO: Will reimplement once know where to read data from
-        # TFM.exportText(self.fileAddress, text) I'm pulling from tree correct?
+        if self.file_address is None:
+            # no code was imported initially, get the new save file
+            save_address = TFM.getSaveFilePathFromBrowswer()
+            print(save_address)
+            # TODO: get text from editor and export it to save_address
+        else:
+            # TODO: get text from editor and export it to self.fileAddress
+            pass
+        
 
     def outputToConsole(self, event):
         # Outputs text to console
         self.view.data_entry.insert(tk.END, event)
         self.view.insert_newline(event)
 
+"""
 root = tk.Tk()
 app = DataGUI(root)
 vController = ViewController(app)
@@ -82,3 +97,4 @@ vController.runButtonClicked()
 app.memory = vController.curMemory
 app.update_table()
 root.mainloop()
+"""

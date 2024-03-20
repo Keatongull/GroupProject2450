@@ -1,0 +1,23 @@
+Code Inspection Checklist
+
+1. Code Formatting and Style
+    Is the code consistently formatted? No, we have been updating things to be in snake case to try to fix this
+    Are naming conventions followed for variables, functions, etc? No, we have some functions/variables that need to be updated
+2. Correctness and Completeness
+    Are all algorithms implemented correctly? as far as implemented algorithms they all work but we have a few that still need to be implemented
+    Are there any logical errors or incorrect assumptions?
+| **3. Efficiency** |
+| - Are there any unnecessary computations or redundant operations? |
+| - Can any parts of the code be optimized for better performance? |
+| **4. Error Handling** |
+| - Are potential errors or exceptions handled properly? |
+| - Is there appropriate input validation to prevent unexpected issues? |
+| **5. Documentation and Comments** |
+| - Is the code well-documented, explaining the purpose and logic of complex sections? |
+| - Are all functions and modules accompanied by comments describing their behavior? |
+| **6. Security** |
+| - Are there any security vulnerabilities, such as SQL injections or buffer overflows? |
+| - Is sensitive data properly encrypted and secured? |
+| **7. Portability and Maintainability** |
+| - Is the code written in a way that it can be easily adapted or modified? |
+| - Are there hard-coded values that could be replaced with variables or constants? |

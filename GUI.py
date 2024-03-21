@@ -31,14 +31,15 @@ class DataGUI:
         self.save_button = tk.Button(self.buttons_frame, text="Save Code", command=self.viewController.saveButtonClicked, width=17, height=2)
         self.save_button.grid(row=0, column=3, padx=5, pady=5)
         self.exit_button = tk.Button(self.buttons_frame, text="Change Theme", command=self.change_theme, width=17, height=2)
-        self.exit_button.grid(row=0, column=4, columnspan=2, padx=5, pady=5)
+        self.exit_button.grid(row=1, column=0, columnspan=2, padx=5, pady=5)
         self.exit_button = tk.Button(self.buttons_frame, text="Exit", command=root.destroy, width=17, height=2)
-        self.exit_button.grid(row=2, column=4, columnspan=2, padx=5, pady=5)
+        self.exit_button.grid(row=1, column=1, columnspan=2, padx=5, pady=5)
 
         self.memory_tree = ttk.Treeview(self.right_frame, columns=('Column 1', 'Column 2'), show='headings')
         self.memory_tree.heading('Column 1', text='Line #')
         self.memory_tree.heading('Column 2', text='Memory Editor')
         self.memory_tree.pack(expand=True, fill=tk.BOTH, padx=20)
+        self.memory_tree.column('Column 1', width=10, minwidth=30)
 
         self.update_memory_tree(["0"] * 100)
 
@@ -75,6 +76,8 @@ class DataGUI:
         if hex_value:
             try:
                 self.root.configure(bg=hex_value)
+                self.left_frame.configure(bg=hex_value)
+                self.right_frame.configure(bg=hex_value)
                 self.buttons_frame.configure(bg=hex_value)
                 messagebox.showinfo("Success", f"Theme changed to {hex_value}")
             except Exception as e:

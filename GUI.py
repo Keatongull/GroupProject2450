@@ -55,8 +55,8 @@ class DataGUI:
             self.memory_tree.delete(row)
         
         for i in range(100):
-            instruction = values[i] if i < len(values) else ""
-            self.memory_tree.insert('', 'end', values=(i + 1, instruction))
+            instruction = str(values[i]) if i < len(values) else ""
+            self.memory_tree.insert('', 'end', value=(i+1, instruction), text=(instruction))
 
     def insert_newline(self, event):
         self.data_entry.insert(tk.END, "\n")
@@ -64,7 +64,7 @@ class DataGUI:
     def get_mem_data(self):
         mem_data_list = []
         for line in self.memory_tree.get_children():
-            mem_data = self.memory_tree.item(line)['values'][-1]
+            mem_data = self.memory_tree.item(line)['text']
             if mem_data != '':
                 mem_data_list.append(mem_data)
         print(mem_data_list)

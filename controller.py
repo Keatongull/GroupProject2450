@@ -35,28 +35,28 @@ class ViewController:
         """
         
         instruct_list = self.view.get_mem_data()
-        print(instruct_list)
+        self.current_memory = Memory(instruct_list)
 
-        # while True:
-        #     execution_status = self.current_memory.runInstructions()
-        #     print(execution_status)
+        while True:
+            execution_status = self.current_memory.runInstructions()
+            print(execution_status)
 
-        #     if execution_status == "memory range error":
-        #         break
+            if execution_status == "memory range error":
+                break
 
-        #     elif execution_status == "halt":
-        #         break
+            elif execution_status == "halt":
+                break
 
-        #     elif execution_status == "read":
-        #         # TODO: Should pause until provided input
-        #         pass
+            elif execution_status == "read":
+                # TODO: Should pause until provided input
+                pass
 
-        #     elif execution_status == "write":
-        #         # TODO: Go fetch the value in the given memory position and print it to console
-        #         pass
+            elif execution_status == "write":
+                # TODO: Go fetch the value in the given memory position and print it to console
+                pass
 
-        #     elif execution_status == "invalid command error":
-        #         break
+            elif execution_status == "invalid command error":
+                break
             
 
     def importButtonClicked(self):

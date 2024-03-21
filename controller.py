@@ -1,6 +1,6 @@
 from memory import Memory
 import tkinter as tk
-from TextFileManager import TextFileManager as TFM
+from text_file_manager import TextFileManager as TFM
 # from GUI import DataGUI (this line causes a circular import error)
 
 

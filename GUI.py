@@ -57,4 +57,12 @@ class DataGUI:
     def insert_newline(self, event):
         self.data_entry.insert(tk.END, "\n")
 
+    def get_mem_data(self):
+        mem_data_list = []
+        for line in self.memory_tree.get_children():
+            mem_data = self.memory_tree.item(line)
+            if mem_data != '':
+                mem_data_list.append(mem_data)
+        return mem_data_list
+
 

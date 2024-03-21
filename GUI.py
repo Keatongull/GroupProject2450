@@ -30,10 +30,12 @@ class DataGUI:
         self.import_button.grid(row=0, column=2, padx=5, pady=5)
         self.save_button = tk.Button(self.buttons_frame, text="Save Code", command=self.viewController.saveButtonClicked, width=17, height=2)
         self.save_button.grid(row=0, column=3, padx=5, pady=5)
-        self.exit_button = tk.Button(self.buttons_frame, text="Change Theme", command=self.change_theme, width=17, height=2)
-        self.exit_button.grid(row=1, column=0, columnspan=2, padx=5, pady=5)
+        self.change_theme_button = tk.Button(self.buttons_frame, text="Change Theme", command=self.change_theme, width=17, height=2)
+        self.change_theme_button.grid(row=1, column=0, columnspan=2, padx=5, pady=5)
         self.exit_button = tk.Button(self.buttons_frame, text="Exit", command=root.destroy, width=17, height=2)
         self.exit_button.grid(row=1, column=1, columnspan=2, padx=5, pady=5)
+        self.test_button = tk.Button(self.buttons_frame, text="Test", command=self.get_mem_data, width=17, height=2)
+        self.test_button.grid(row=1, column=2, columnspan=2, padx=5, pady=5)
 
         self.memory_tree = ttk.Treeview(self.right_frame, columns=('Column 1', 'Column 2'), show='headings')
         self.memory_tree.heading('Column 1', text='Line #')
@@ -65,7 +67,9 @@ class DataGUI:
             mem_data = self.memory_tree.item(line)['values'][-1]
             if mem_data != '':
                 mem_data_list.append(mem_data)
+        print(mem_data_list)
         return mem_data_list
+
 
 
     def get_memory_text(self):

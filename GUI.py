@@ -65,9 +65,7 @@ class DataGUI:
         mem_data_list = []
         for line in self.memory_tree.get_children():
             mem_data = self.memory_tree.item(line)['text']
-            if mem_data != '':
-                mem_data_list.append(mem_data)
-        print(mem_data_list)
+            mem_data_list.append(mem_data)
         return mem_data_list
 
 

@@ -69,10 +69,6 @@ class DataGUI:
         return mem_data_list
 
 
-
-    def get_memory_text(self):
-        pass
-    
     def change_theme(self):
         hex_value = simpledialog.askstring("Change Theme", "Enter a hex value (e.g., #RRGGBB):")
         if hex_value:

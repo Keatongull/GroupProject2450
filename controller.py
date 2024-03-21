@@ -34,6 +34,9 @@ class ViewController:
             self.current_memory = Memory(instructList)
         """
         
+        instruct_list = self.view.get_mem_data()
+        self.current_memory = Memory(instruct_list)
+
         while True:
             execution_status = self.current_memory.runInstructions()
             print(execution_status)

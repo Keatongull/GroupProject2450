@@ -17,18 +17,18 @@ class DataGUI:
         #data entry references the console?
         self.data_entry = tk.Text(self.left_frame, bg='#d3d3d3')
         self.data_entry.pack(fill=tk.BOTH, expand=True, pady=5)
-        self.data_entry.bind("<Return>", self.insert_newline)
+        self.data_entry.bind("<Return>", self.insert_newline_in_console)
 
         self.buttons_frame = tk.Frame(self.left_frame, bg='#0F5132')
         self.buttons_frame.pack(fill=tk.BOTH, expand=True, pady=5)
 
-        self.run_button = tk.Button(self.buttons_frame, text="Run", command=self.viewController.runButtonClicked, width=17, height=2)
+        self.run_button = tk.Button(self.buttons_frame, text="Run", command=self.viewController.run_button_clicked, width=17, height=2)
         self.run_button.grid(row=0, column=0, padx=5, pady=5)
         self.clear_button = tk.Button(self.buttons_frame, text="Clear", command=self.clear_data, width=17, height=2)
         self.clear_button.grid(row=0, column=1, padx=5, pady=5)
-        self.import_button = tk.Button(self.buttons_frame, text="Open File", command=self.viewController.importButtonClicked, width=17, height=2)
+        self.import_button = tk.Button(self.buttons_frame, text="Open File", command=self.viewController.open_button_clicked, width=17, height=2)
         self.import_button.grid(row=0, column=2, padx=5, pady=5)
-        self.save_button = tk.Button(self.buttons_frame, text="Save Code", command=self.viewController.saveButtonClicked, width=17, height=2)
+        self.save_button = tk.Button(self.buttons_frame, text="Save Code", command=self.viewController.save_button_clicked, width=17, height=2)
         self.save_button.grid(row=0, column=3, padx=5, pady=5)
         self.change_theme_button = tk.Button(self.buttons_frame, text="Change Theme", command=self.change_theme, width=17, height=2)
         self.change_theme_button.grid(row=0, column=4, padx=5, pady=5)
@@ -58,16 +58,31 @@ class DataGUI:
             instruction = str(values[i]) if i < len(values) else ""
             self.memory_tree.insert('', 'end', value=(i+1, instruction), text=(instruction))
 
-    def insert_newline(self, event):
+    def insert_newline_in_console(self):
         self.data_entry.insert(tk.END, "\n")
+
+    def output_to_console(self, text):
+        # Outputs text to console
+        self.data_entry.insert(tk.END, text)
+        self.insert_newline_in_console()
 
     def get_mem_data(self):
         mem_data_list = []
         for line in self.memory_tree.get_children():
             mem_data = self.memory_tree.item(line)['text']
-            mem_data_list.append(mem_data)
+            if mem_data == "":
+                mem_data_list.append("0")
+            else:
+                mem_data_list.append(mem_data)
         return mem_data_list
-
+    
+    def get_user_input(self):
+        # called during a READ command. Returns a string of user input.
+        text = simpledialog.askstring("User Input Expected", "Enter Text")
+        # askstring returns None if cancelled
+        if text is None:
+            return ""
+        return text
 
     def change_theme(self):
         hex_value = simpledialog.askstring("Change Theme", "Enter a hex value (e.g., #RRGGBB):")

@@ -1,5 +1,8 @@
 from memory_commands import Add, Subtract, Divide, Multiply, BranchNeg, BranchZero
 
+# TODO create memory error object for detailed error messages
+# TODO add operand type error checking for all commands
+
 class Memory:
     
     # requires a string list of commands to initialize
@@ -12,17 +15,23 @@ class Memory:
         for i in range(len(instructionList)):
             self._memList[i] = instructionList[i]
 
-        self._accumulator = 0         # integer used for interal computation
+        self._accumulator = 0         # integer used for internal computation
         self._instructionPointer = 0  # points to next location in memory to run
         self._IOAddress = 0           # memory address used for I/O commands
 
-    # called by the ViewController after a WRITE command to get output from memory
+
+
     def getOutput(self):
-        return self._memList[self._IOAddress]
+        # called by the ViewController after a WRITE command to get output from memory
+        return self._memList[self._IOAddress - 1]
     
-    # called by the ViewController after a READ command to set user input into memory
+
+    
     def setInput(self, str):
-        self._memList[self._IOAddress] = str
+        # called by the ViewController after a READ command to set user input into memory
+        self._memList[self._IOAddress - 1] = str
+
+
 
     def runInstructions(self):
         """ Loops through instructions in memory executing each one in order
@@ -31,23 +40,27 @@ class Memory:
             - read
             - write
             - halt
-            - invalid command error
-            - invalid format error
+            - command format error
             - memory range error
             - zero division error
         """
 
+        # TODO add infinite loop check here?
+        
         # begin loop of memory execution
         while True:
-
             # this check is neccessary if there is no HALT instruction present
             if self._instructionPointer < 0 or self._instructionPointer > 99:
                 return "memory range error"
             instruction = self._memList[self._instructionPointer]
             #TODO add check for invalid instruction format here
 
+            if len(instruction) != 5:
+                return "command format error"
+
             # parse instruction into command and address parts
             command = instruction[1:3]
+            # rememeber that addresses are 1 based but the memory list is zero based
             address = int(instruction[3:])
             if address < 0 or address > 99:
                 return "memory range error"
@@ -70,13 +83,13 @@ class Memory:
             # LOAD command
             elif command == "20":
                 # sets the accumulator value from memory
-                self._accumulator = int(self._memList[address])
+                self._accumulator = int(self._memList[address - 1])
                 continue
 
             # STORE command
             elif command == "21":
                 # saves the accumulator value into memory
-                self._memList[address] = str(self._accumulator)
+                self._memList[address - 1] = str(self._accumulator)
                 continue
 
             # ADD command
@@ -91,7 +104,10 @@ class Memory:
 
             # DIVIDE command
             elif command == "32":
-                self._accumulator = Divide.execute(self._accumulator, int(self._memList[address]))
+                try:
+                    self._accumulator = Divide.execute(self._accumulator, int(self._memList[address]))
+                except ZeroDivisionError:
+                    return "zero division error"
                 continue
 
             # MULITPLY command
@@ -121,7 +137,7 @@ class Memory:
                 return "halt"
 
             else:
-                return "invalid command error"
+                return "command format error"
 
         # end execution loop
         

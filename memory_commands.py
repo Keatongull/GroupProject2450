@@ -26,6 +26,8 @@ class Subtract:
 class Divide:
     @staticmethod
     def execute(accumulator, value):
+        if value == 0:
+            raise ZeroDivisionError
         return accumulator / value
 
 class Multiply:

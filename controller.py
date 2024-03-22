@@ -3,90 +3,86 @@ import tkinter as tk
 from text_file_manager import TextFileManager as TFM
 # from GUI import DataGUI (this line causes a circular import error)
 
+# TODO show the active open file on the UI somewhere
 
 class ViewController:
     def __init__(self, view):
         self.current_memory: Memory = None
         self.view = view
-        self.file_address = None 
+        self.file_address = ""
 
-    def runButtonClicked(self):
-        print("run button clicked")
+    def run_button_clicked(self):
+        # Clear the console
+        # Grabs instruction text from memory editor text box
+        # Create the Memory object and start it running
+        # Wait for return status
         
-        # Runs the program
-        # Switch statement and loop, similar to runInstructions. Interacts with both memory and gui
-        # TODO:
-            # Clear the console
-            # Take text from memory editor text box
-            # Split text on new lines, turn into string list
-            # Create the Memory object and start it running
-            # Wait for return status
-
-        """
-        if self.fileAddress != None:
-            instructList = TFM.importText(self.fileAddress).splitlines() # instructlist will be a list made from the contents of the imported file
-            # This is really ugly. Iterates through list, making sure each item is the right length, if not we remove it.
-            for i in range(len(instructList)):
-                if len(instructList[i]) != 5:
-                    instructList.pop(i)
-        
-                    
-            self.current_memory = Memory(instructList)
-        """
-        
-        instruct_list = self.view.get_mem_data()
-        self.current_memory = Memory(instruct_list)
+        instruction_list = self.view.get_mem_data()
+        self.current_memory = Memory(instruction_list)
 
         while True:
+            #start memory running
             execution_status = self.current_memory.runInstructions()
-            print(execution_status)
 
-            if execution_status == "memory range error":
-                break
-
-            elif execution_status == "halt":
-                break
+            if execution_status == "halt":
+                # end execution
+                self.view.output_to_console("\nProgram Ended (status 43 : HALT command)")
+                return
 
             elif execution_status == "read":
-                # TODO: Should pause until provided input
-                pass
+                user_input = self.view.get_user_input()
+                self.current_memory.setInput(user_input)
+                continue
 
             elif execution_status == "write":
-                # TODO: Go fetch the value in the given memory position and print it to console
-                pass
+                self.view.output_to_console(self.current_memory.getOutput())
+                continue
 
-            elif execution_status == "invalid command error":
-                break
+            elif execution_status == "memory range error":
+                # end execution
+                self.view.output_to_console("\nProgram Ended (status : memory range error)")
+                return
+            
+            elif execution_status == "command format error":
+                # end execution
+                self.view.output_to_console("\nProgram Ended (status : commmand format error)")
+                return
+            
+            else:
+                raise Exception("STATUS CODE ERROR")
             
 
-    def importButtonClicked(self):
-        print("import button clicked")
-    
-        # When the import button is clicked this will be called, opens file explorer to select a txt file. Sets our fileAddress
-        self.file_address = TFM.getFilePathFromBrowser()
-        if self.file_address == "":
+    def open_button_clicked(self):
+        # opens file browser for user to select a text file to open. Inserts file contents to memory editor
+        open_address = TFM.get_file_path_from_browser()
+        if open_address == "":
             # the file browser was cancelled
             return
-        codeText = TFM.importTextFromFile(self.file_address)
-        instructions = codeText.split('\n')
-        print(instructions)
-        self.view.update_memory_tree(instructions)
-
-    def saveButtonClicked(self):
-        print("save button clicked")
-    
-        # TODO: Will reimplement once know where to read data from
-        if self.file_address is None:
-            # no code was imported initially, get the new save file
-            save_address = TFM.getSaveFilePathFromBrowswer()
-            print(save_address)
-            # TODO: get text from editor and export it to save_address
-        else:
-            # TODO: get text from editor and export it to self.fileAddress
-            pass
         
+        codeText = TFM.import_text_from_file(open_address)
+        instructions = codeText.split('\n')
+        # set the new file_address after import in case any errors occurred
+        self.file_address = open_address
+        self.view.update_memory_tree(instructions)
+        self.view.output_to_console("Active File Set To " + open_address)
 
-    def outputToConsole(self, event):
-        # Outputs text to console
-        self.view.data_entry.insert(tk.END, event)
-        self.view.insert_newline(event)
+    def save_button_clicked(self):
+        # saves to the active open file, otherwise asks create a new file, then sets it as active
+    
+        if self.file_address == "":
+            # no file was currently open, save to a new file instead
+            save_address = TFM.get_save_file_path_from_browser()
+            if save_address == "":
+                # file browser was cancelled
+                return
+            code_text = "\n".join(self.view.get_mem_data())
+            TFM.export_text_to_file(save_address, code_text)
+            # open the new file
+            self.file_address = save_address
+            self.view.output_to_console("File Saved. Active File Set To " + self.file_address)
+        else:
+            # save to active open file
+            code_text = "\n".join(self.view.get_mem_data())
+            TFM.export_text_to_file(self.file_address, code_text)
+            self.view.output_to_console("File Saved to " + self.file_address)
+        

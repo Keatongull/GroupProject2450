@@ -18,7 +18,7 @@ class DataGUI:
         self.right_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=10, pady=10)
         
         # Define the "off" color
-        self.off_color = '#d3d3d3'
+
 
         # Data entry references the console
         self.data_entry = tk.Text(self.left_frame, bg=self.off_color)
@@ -124,7 +124,6 @@ class DataGUI:
             self.config.read('config.ini')
             self.theme_color = self.config.get('GUI', 'theme_color', fallback='#0F5132')
             self.off_color = self.config.get('GUI', 'off_color', fallback='#FFFFFF')  # Load off color from config
-            print("Loaded theme color:", self.theme_color)  # Debug output
         except Exception as e:
             print("Error loading config:", e)  # Error handling
 
@@ -133,6 +132,5 @@ class DataGUI:
         try:
             with open('config.ini', 'w') as configfile:
                 self.config.write(configfile)
-            print("Config saved successfully.")  # Debug output
         except Exception as e:
             print("Error saving config:", e)  # Error handling

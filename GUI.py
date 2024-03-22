@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import simpledialog, messagebox
 from tkinter import ttk
+import configparser  # Import configparser module
 from controller import ViewController
 
 class DataGUI:
@@ -9,17 +10,22 @@ class DataGUI:
         self.viewController = ViewController(self)
         self.root.title("Data Table GUI")
         
-        self.left_frame = tk.Frame(self.root, bg='#0F5132')
+        self.load_config()  # Load theme from config file
+
+        self.left_frame = tk.Frame(self.root, bg=self.theme_color)
         self.left_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=10, pady=10)
-        self.right_frame = tk.Frame(self.root, bg='#0F5132')
+        self.right_frame = tk.Frame(self.root, bg=self.theme_color)
         self.right_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=10, pady=10)
         
-        #data entry references the console?
-        self.data_entry = tk.Text(self.left_frame, bg='#d3d3d3')
+        # Define the "off" color
+        self.off_color = '#d3d3d3'
+
+        # Data entry references the console
+        self.data_entry = tk.Text(self.left_frame, bg=self.off_color)
         self.data_entry.pack(fill=tk.BOTH, expand=True, pady=5)
         self.data_entry.bind("<Return>", self.insert_newline_in_console)
 
-        self.buttons_frame = tk.Frame(self.left_frame, bg='#0F5132')
+        self.buttons_frame = tk.Frame(self.left_frame, bg=self.theme_color)
         self.buttons_frame.pack(fill=tk.BOTH, expand=True, pady=5)
 
         self.run_button = tk.Button(self.buttons_frame, text="Run", command=self.viewController.run_button_clicked, width=17, height=2)
@@ -34,8 +40,6 @@ class DataGUI:
         self.change_theme_button.grid(row=0, column=4, padx=5, pady=5)
         self.exit_button = tk.Button(self.buttons_frame, text="Exit", command=root.destroy, width=17, height=2)
         self.exit_button.grid(row=0, column=5, padx=5, pady=5)
-        # self.test_button = tk.Button(self.buttons_frame, text="Test", command=self.get_mem_data, width=17, height=2)
-        # self.test_button.grid(row=1, column=2, columnspan=2, padx=5, pady=5)
 
         self.memory_tree = ttk.Treeview(self.right_frame, columns=('Column 1', 'Column 2'), show='headings')
         self.memory_tree.heading('Column 1', text='Line #')
@@ -85,13 +89,50 @@ class DataGUI:
         return text
 
     def change_theme(self):
-        hex_value = simpledialog.askstring("Change Theme", "Enter a hex value (e.g., #RRGGBB):")
-        if hex_value:
+        top_level_window = self.root.winfo_toplevel()
+        primary_color = simpledialog.askstring("Change Theme", "Enter the primary color (e.g., #RRGGBB):", parent=top_level_window)
+        off_color = simpledialog.askstring("Change Theme", "Enter the 'off' color (e.g., #RRGGBB):", parent=top_level_window)
+        
+        if primary_color and off_color:
             try:
-                self.root.configure(bg=hex_value)
-                self.left_frame.configure(bg=hex_value)
-                self.right_frame.configure(bg=hex_value)
-                self.buttons_frame.configure(bg=hex_value)
-                messagebox.showinfo("Success", f"Theme changed to {hex_value}")
+                self.root.configure(bg=primary_color)
+                self.left_frame.configure(bg=primary_color)
+                self.right_frame.configure(bg=primary_color)
+                self.buttons_frame.configure(bg=primary_color)
+                self.theme_color = primary_color  # Update theme color attribute
+                self.off_color = off_color  # Update off color attribute
+                self.apply_theme()  # Apply the theme
+                self.save_config()  # Save theme to config file
+                messagebox.showinfo("Success", f"Theme changed. Primary color: {primary_color}, Off color: {off_color}")
             except Exception as e:
-                messagebox.showerror("Error", f"Invalid hex value or error occurred: {str(e)}")
+                messagebox.showerror("Error", f"Invalid color or error occurred: {str(e)}")
+
+    def apply_theme(self):
+        # Apply the theme to the GUI elements
+        self.run_button.configure(bg=self.off_color)
+        self.clear_button.configure(bg=self.off_color)
+        self.import_button.configure(bg=self.off_color)
+        self.save_button.configure(bg=self.off_color)
+        self.change_theme_button.configure(bg=self.off_color)
+        self.exit_button.configure(bg=self.off_color)
+        self.data_entry.configure(bg=self.off_color)  # Set console background color
+        # You can continue setting other widgets to the off color as needed
+
+    def load_config(self):
+        self.config = configparser.ConfigParser()
+        try:
+            self.config.read('config.ini')
+            self.theme_color = self.config.get('GUI', 'theme_color', fallback='#0F5132')
+            self.off_color = self.config.get('GUI', 'off_color', fallback='#FFFFFF')  # Load off color from config
+            print("Loaded theme color:", self.theme_color)  # Debug output
+        except Exception as e:
+            print("Error loading config:", e)  # Error handling
+
+    def save_config(self):
+        self.config['GUI'] = {'theme_color': self.theme_color, 'off_color': self.off_color}  # Save off color to config
+        try:
+            with open('config.ini', 'w') as configfile:
+                self.config.write(configfile)
+            print("Config saved successfully.")  # Debug output
+        except Exception as e:
+            print("Error saving config:", e)  # Error handling

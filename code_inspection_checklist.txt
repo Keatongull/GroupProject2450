@@ -1,23 +1,37 @@
 Code Inspection Checklist
 
 1. Code Formatting and Style
-    Is the code consistently formatted? No, we have been updating things to be in snake case to try to fix this
-    Are naming conventions followed for variables, functions, etc? No, we have some functions/variables that need to be updated
+    Is the code consistently formatted? 
+       - Yes, we have been updating things to be in snake case to try to fix this. Mostly everything should be formatted now
+    Are naming conventions followed for variables, functions, etc? 
+       - Yes, those were changed as well
 2. Correctness and Completeness
-    Are all algorithms implemented correctly? as far as implemented algorithms they all work but we have a few that still need to be implemented
+    Are all algorithms implemented correctly?
+       - As far as implemented algorithms they all work but we have a few that still need to be implemented
     Are there any logical errors or incorrect assumptions?
-| **3. Efficiency** |
-| - Are there any unnecessary computations or redundant operations? |
-| - Can any parts of the code be optimized for better performance? |
-| **4. Error Handling** |
-| - Are potential errors or exceptions handled properly? |
-| - Is there appropriate input validation to prevent unexpected issues? |
-| **5. Documentation and Comments** |
-| - Is the code well-documented, explaining the purpose and logic of complex sections? |
-| - Are all functions and modules accompanied by comments describing their behavior? |
-| **6. Security** |
-| - Are there any security vulnerabilities, such as SQL injections or buffer overflows? |
-| - Is sensitive data properly encrypted and secured? |
-| **7. Portability and Maintainability** |
-| - Is the code written in a way that it can be easily adapted or modified? |
-| - Are there hard-coded values that could be replaced with variables or constants? |
+       - We are missing type checking but that should be the only thing
+3. Efficiency
+    Are there any unnecessary computations or redundant operations?
+       - No
+    Can any parts of the code be optimized for better performance?
+       - Not that we're aware of
+4. Error Handling
+    Are potential errors or exceptions handled properly? 
+       - Not all of them, missing type error
+    Is there appropriate input validation to prevent unexpected issues?
+       - No
+5. Documentation and Comments
+    Is the code well-documented, explaining the purpose and logic of complex sections?
+       - Most functions have documention at the beginning and during logic
+    Are all functions and modules accompanied by comments describing their behavior?
+       - Mostly
+6. Security
+    Are there any security vulnerabilities, such as SQL injections or buffer overflows?
+       - No
+    Is sensitive data properly encrypted and secured?
+       - Yes
+7. Portability and Maintainability
+    Is the code written in a way that it can be easily adapted or modified?
+       - Yes, it would be easy to adapt. Memory is very specific though
+    Are there hard-coded values that could be replaced with variables or constants?
+       - No

@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import simpledialog, messagebox
 from tkinter import ttk
-import configparser  # Import configparser module
+import configparser
 from controller import ViewController
 
 class DataGUI:
@@ -30,7 +30,7 @@ class DataGUI:
 
         self.run_button = tk.Button(self.buttons_frame, text="Run", command=self.viewController.run_button_clicked, width=17, height=2)
         self.run_button.grid(row=0, column=0, padx=5, pady=5)
-        self.clear_button = tk.Button(self.buttons_frame, text="Clear", command=self.clear_data, width=17, height=2)
+        self.clear_button = tk.Button(self.buttons_frame, text="Clear", command=self.clear_console, width=17, height=2)
         self.clear_button.grid(row=0, column=1, padx=5, pady=5)
         self.import_button = tk.Button(self.buttons_frame, text="Open File", command=self.viewController.open_button_clicked, width=17, height=2)
         self.import_button.grid(row=0, column=2, padx=5, pady=5)
@@ -49,8 +49,8 @@ class DataGUI:
 
         self.update_memory_tree(["0"] * 100)
 
-    def clear_data(self):
-        # is this for clearing the console?
+    def clear_console(self):
+        # TODO clear the main console
         pass
 
     #updates the memory view with a list of values/instructions
@@ -119,6 +119,7 @@ class DataGUI:
         # You can continue setting other widgets to the off color as needed
 
     def load_config(self):
+        # gets theme from config file
         self.config = configparser.ConfigParser()
         try:
             self.config.read('config.ini')
@@ -128,6 +129,7 @@ class DataGUI:
             print("Error loading config:", e)  # Error handling
 
     def save_config(self):
+        # saves theme to config file
         self.config['GUI'] = {'theme_color': self.theme_color, 'off_color': self.off_color}  # Save off color to config
         try:
             with open('config.ini', 'w') as configfile:

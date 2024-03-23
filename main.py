@@ -1,4 +1,3 @@
-from memory import Memory
 import tkinter as tk
 from GUI import DataGUI
 

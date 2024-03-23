@@ -12,17 +12,22 @@ class ViewController:
         self.file_address = ""
 
     def run_button_clicked(self):
-        # Clear the console
+        # TODO Clear the console
         # Grabs instruction text from memory editor text box
         # Create the Memory object and start it running
         # Wait for return status
         
         instruction_list = self.view.get_mem_data()
+        # stop program from running if memory is too large
+        if len(instruction_list) > 100:
+            self.view.output_to_console("Runtime memory cannot exceed 100 instructions. Please remove excess lines from editor and try again.")
+            return
+        
         self.current_memory = Memory(instruction_list)
 
         while True:
             #start memory running
-            execution_status = self.current_memory.runInstructions()
+            execution_status = self.current_memory.run_instructions()
 
             if execution_status == "halt":
                 # end execution
@@ -31,11 +36,11 @@ class ViewController:
 
             elif execution_status == "read":
                 user_input = self.view.get_user_input()
-                self.current_memory.setInput(user_input)
+                self.current_memory.set_input(user_input)
                 continue
 
             elif execution_status == "write":
-                self.view.output_to_console(self.current_memory.getOutput())
+                self.view.output_to_console(self.current_memory.get_output())
                 continue
 
             elif execution_status == "memory range error":

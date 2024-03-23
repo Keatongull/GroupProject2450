@@ -2,6 +2,7 @@ from memory_commands import Add, Subtract, Divide, Multiply, BranchNeg, BranchZe
 
 # TODO create memory error object for detailed error messages
 # TODO add operand type error checking for all commands
+# TODO write constants for commands and status codes
 
 class Memory:
     
@@ -11,29 +12,29 @@ class Memory:
             raise Exception("instruction list exceeds memory limit")
         
         # create empty memory and then fill in instructions
-        self._memList = ["0"] * 100
+        self._memory_list = ["0"] * 100
         for i in range(len(instructionList)):
-            self._memList[i] = instructionList[i]
+            self._memory_list[i] = instructionList[i]
 
         self._accumulator = 0         # integer used for internal computation
-        self._instructionPointer = 0  # points to next location in memory to run
-        self._IOAddress = 0           # memory address used for I/O commands
+        self._instruction_pointer = 0  # points to next location in memory to run
+        self._IO_address = 0           # memory address used for I/O commands
 
 
 
-    def getOutput(self):
+    def get_output(self):
         # called by the ViewController after a WRITE command to get output from memory
-        return self._memList[self._IOAddress - 1]
+        return self._memory_list[self._IO_address - 1]
     
 
     
-    def setInput(self, str):
+    def set_input(self, str):
         # called by the ViewController after a READ command to set user input into memory
-        self._memList[self._IOAddress - 1] = str
+        self._memory_list[self._IO_address - 1] = str
 
 
 
-    def runInstructions(self):
+    def run_instructions(self):
         """ Loops through instructions in memory executing each one in order
             Returns a status code in case of I/O or halt commands. Or in case of memory or execution error.
             LIST OF STATUS CODES
@@ -44,17 +45,15 @@ class Memory:
             - memory range error
             - zero division error
         """
-
-        # TODO add infinite loop check here?
         
         # begin loop of memory execution
         while True:
             # this check is neccessary if there is no HALT instruction present
-            if self._instructionPointer < 0 or self._instructionPointer > 99:
+            if self._instruction_pointer < 0 or self._instruction_pointer > 99:
                 return "memory range error"
-            instruction = self._memList[self._instructionPointer]
-            #TODO add check for invalid instruction format here
+            instruction = self._memory_list[self._instruction_pointer]
 
+            #TODO add a regex to check for invalid instruction format here
             if len(instruction) != 5:
                 return "command format error"
 
@@ -62,74 +61,74 @@ class Memory:
             command = instruction[1:3]
             # rememeber that addresses are 1 based but the memory list is zero based
             address = int(instruction[3:])
-            if address < 0 or address > 99:
+            if address < 1 or address > 100:
                 return "memory range error"
 
             # update next instruction in memory to be run
-            self._instructionPointer += 1
+            self._instruction_pointer += 1
 
             # READ command
             if command == "10":
                 # set the memory address that the user input will be set to.
-                self._IOAddress = address
+                self._IO_address = address
                 return "read"
             
             # WRITE command
             elif command == "11":
                 # set the memory address for where the output value is.
-                self._IOAddress = address
+                self._IO_address = address
                 return "write"
 
             # LOAD command
             elif command == "20":
                 # sets the accumulator value from memory
-                self._accumulator = int(self._memList[address - 1])
+                self._accumulator = int(self._memory_list[address - 1])
                 continue
 
             # STORE command
             elif command == "21":
                 # saves the accumulator value into memory
-                self._memList[address - 1] = str(self._accumulator)
+                self._memory_list[address - 1] = str(self._accumulator)
                 continue
 
             # ADD command
             elif command == "30":
-                self._accumulator = Add.execute(self._accumulator, int(self._memList[address]))
+                self._accumulator = Add.execute(self._accumulator, int(self._memory_list[address]))
                 continue
 
             # SUBTRACT command
             elif command == "31":
-                self._accumulator = Subtract.execute(self._accumulator, int(self._memList[address]))
+                self._accumulator = Subtract.execute(self._accumulator, int(self._memory_list[address]))
                 continue
 
             # DIVIDE command
             elif command == "32":
                 try:
-                    self._accumulator = Divide.execute(self._accumulator, int(self._memList[address]))
+                    self._accumulator = Divide.execute(self._accumulator, int(self._memory_list[address]))
                 except ZeroDivisionError:
                     return "zero division error"
                 continue
 
             # MULITPLY command
             elif command == "33":
-                self._accumulator = Multiply.execute(self._accumulator, int(self._memList[address]))
+                self._accumulator = Multiply.execute(self._accumulator, int(self._memory_list[address]))
                 continue
 
             # BRANCH command
             elif command == "40":
-                self._instructionPointer = address
+                self._instruction_pointer = address
                 continue
 
             # BRANCHNEG command
             elif command == "41":
                 if BranchNeg.execute(self._accumulator):
-                    self._instructionPointer = address
+                    self._instruction_pointer = address
                 continue
 
             # BRANCHZERO command
             elif command == "42":
                 if BranchZero.execute(self._accumulator):
-                    self._instructionPointer = address
+                    self._instruction_pointer = address
                 continue
 
             # HALT command

@@ -1,18 +1,6 @@
 
 #add abstract class?
 
-class Read:
-    pass
-
-class Write:
-    pass
-
-class Load:
-    pass
-
-class Store:
-    pass
-
 class Add:
     @staticmethod
     def execute(accumulator, value):

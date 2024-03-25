@@ -28,13 +28,13 @@ class DataGUI:
 
         self.run_button = tk.Button(self.buttons_frame, text="Run", command=self.viewController.run_button_clicked, width=17, height=2)
         self.run_button.grid(row=0, column=0, padx=5, pady=5)
-        self.clear_button = tk.Button(self.buttons_frame, text="Clear", command=self.clear_console, width=17, height=2)
+        self.clear_button = tk.Button(self.buttons_frame, text="Clear Console", command=self.clear_console, width=17, height=2)
         self.clear_button.grid(row=0, column=1, padx=5, pady=5)
         self.import_button = tk.Button(self.buttons_frame, text="Open File", command=self.viewController.open_button_clicked, width=17, height=2)
         self.import_button.grid(row=0, column=2, padx=5, pady=5)
         self.save_button = tk.Button(self.buttons_frame, text="Save Code", command=self.viewController.save_button_clicked, width=17, height=2)
         self.save_button.grid(row=0, column=3, padx=5, pady=5)
-        self.edit_cell_button = tk.Button(self.buttons_frame, text="Edit", command=self.edit_cell, width=17, height=2)
+        self.edit_cell_button = tk.Button(self.buttons_frame, text="Edit Memory", command=self.edit_cell, width=17, height=2)
         self.edit_cell_button.grid(row=0, column=4, padx=5, pady=6)
         self.change_theme_button = tk.Button(self.buttons_frame, text="Change Theme", command=self.change_theme, width=17, height=2)
         self.change_theme_button.grid(row=0, column=5, padx=5, pady=5)
@@ -50,8 +50,8 @@ class DataGUI:
         self.update_memory_tree(["0"] * 100)
 
     def clear_console(self):
-        # TODO clear the main console
-        pass
+        self.data_entry.delete('1.0', tk.END)
+
 
     def edit_cell(self):
         selected_item = self.memory_tree.focus()

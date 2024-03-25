@@ -138,10 +138,16 @@ class DataGUI:
             messagebox.showerror("Error", f"Invalid color or error occurred: {str(e)}")
 
 
+
     def apply_theme(self):
         # Apply the theme to the GUI elements
         self.data_entry.configure(bg=self.off_color)  # Set console background color
-        # You can continue setting other widgets to the off color as needed
+        
+        # Create a style object
+        treeview_style = ttk.Style()
+        # Set the background color for the Treeview widget
+        treeview_style.configure("Treeview", background=self.off_color)
+
 
     def load_config(self):
         # gets theme from config file
@@ -159,5 +165,6 @@ class DataGUI:
         try:
             with open('config.ini', 'w') as configfile:
                 self.config.write(configfile)
+            print("Config saved successfully")
         except Exception as e:
             print("Error saving config:", e)  # Error handling

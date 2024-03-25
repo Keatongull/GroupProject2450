@@ -112,28 +112,35 @@ class DataGUI:
         primary_color = simpledialog.askstring("Change Theme", "Enter the primary color (e.g., #RRGGBB):", parent=top_level_window)
         off_color = simpledialog.askstring("Change Theme", "Enter the 'off' color (e.g., #RRGGBB):", parent=top_level_window)
         
-        if primary_color and off_color:
-            try:
+        try:
+            if primary_color:
                 self.root.configure(bg=primary_color)
                 self.left_frame.configure(bg=primary_color)
                 self.right_frame.configure(bg=primary_color)
                 self.buttons_frame.configure(bg=primary_color)
                 self.theme_color = primary_color  # Update theme color attribute
+            
+            if off_color:
                 self.off_color = off_color  # Update off color attribute
-                self.apply_theme()  # Apply the theme
-                self.save_config()  # Save theme to config file
+            
+            self.apply_theme()  # Apply the theme
+            self.save_config()  # Save theme to config file
+            
+            # Show success message
+            if primary_color and off_color:
                 messagebox.showinfo("Success", f"Theme changed. Primary color: {primary_color}, Off color: {off_color}")
-            except Exception as e:
-                messagebox.showerror("Error", f"Invalid color or error occurred: {str(e)}")
+            elif primary_color:
+                messagebox.showinfo("Success", f"Primary color changed: {primary_color}")
+            elif off_color:
+                messagebox.showinfo("Success", f"Off color changed: {off_color}")
+            else:
+                messagebox.showwarning("No Change", "No color changes applied.")
+        except Exception as e:
+            messagebox.showerror("Error", f"Invalid color or error occurred: {str(e)}")
+
 
     def apply_theme(self):
         # Apply the theme to the GUI elements
-        self.run_button.configure(bg=self.off_color)
-        self.clear_button.configure(bg=self.off_color)
-        self.import_button.configure(bg=self.off_color)
-        self.save_button.configure(bg=self.off_color)
-        self.change_theme_button.configure(bg=self.off_color)
-        self.exit_button.configure(bg=self.off_color)
         self.data_entry.configure(bg=self.off_color)  # Set console background color
         # You can continue setting other widgets to the off color as needed
 

@@ -15,7 +15,7 @@ The change theme button will prompt the user to input 2 hex color codes which wi
 The exit button closes out the program.
 
 
-NOTE: Memory editor isn't currently implemented but is being worked on.
+NOTE: There are some mac compatability issues, for best results use windows
 
 This is our meeting notes.
 https://docs.google.com/document/d/1W7JCp4B4upx5zzoY-JagPNRcurF5F3yMOh_PcquAHUo/edit

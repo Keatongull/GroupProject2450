@@ -16,8 +16,6 @@ class DataGUI:
         self.left_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=10, pady=10)
         self.right_frame = tk.Frame(self.root, bg=self.theme_color)
         self.right_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=10, pady=10)
-        
-        # Define the "off" color
 
 
         # Data entry references the console
@@ -67,6 +65,7 @@ class DataGUI:
             if new_value is not None:
                 self.memory_tree.item(selected_item, values=(current_line, new_value), text=new_value)
                 messagebox.showinfo("Success", "Cell updated successfully.")
+                self.get_mem_data()
         else:
             messagebox.showwarning("Warning", "Please select a cell to edit.")
 

@@ -61,7 +61,8 @@ class Memory:
             command = instruction[1:3]
             # rememeber that addresses are 1 based but the memory list is zero based
             address = int(instruction[3:])
-            if address < 1 or address > 100:
+
+            if command != "43" and (address < 1 or address > 100):
                 return "memory range error"
 
             # update next instruction in memory to be run

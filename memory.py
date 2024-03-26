@@ -1,143 +1,153 @@
-from memory_commands import Add, Subtract, Divide, Multiply, BranchNeg, BranchZero
+from memory_instructions import InstructionType, Add, Subtract, Divide, Multiply, BranchNeg, BranchZero
+from memory_error import MemoryError, MemoryErrorType as MET
+import re
+from enum import Enum
 
-# TODO create memory error object for detailed error messages
-# TODO add operand type error checking for all commands
-# TODO write constants for commands and status codes
+# TODO add operand type error checking for all instructions
+
+
+class MemoryStatus(Enum):
+    # status codes returned by memory when execution is paused
+    READ = "read"
+    WRITE = "write"
+    HALT = "halt"
+    ERROR = "error"
+
 
 class Memory:
     
-    # requires a string list of commands to initialize
+    # requires a string list of instructions to initialize
     def __init__(self, instructionList):
         if len(instructionList) > 100:
             raise Exception("instruction list exceeds memory limit")
         
-        # create empty memory and then fill in instructions
-        self._memory_list = ["0"] * 100
+        #Public Properties
+        self.memory_error = None       # contains the error object when an error status is returned
+        self._memory_list = ["0"] * 100 # create empty memory and then fill in instructions
         for i in range(len(instructionList)):
             self._memory_list[i] = instructionList[i]
 
-        self._accumulator = 0         # integer used for internal computation
+        # Private Properties
+        self._accumulator = 0          # integer used for internal computation
         self._instruction_pointer = 0  # points to next location in memory to run
-        self._IO_address = 0           # memory address used for I/O commands
-
+        self._IO_address = 0           # memory address used for I/O instruction_types
+        
 
 
     def get_output(self):
-        # called by the ViewController after a WRITE command to get output from memory
+        # called by the ViewController after a WRITE instruction to get output from memory
         return self._memory_list[self._IO_address - 1]
     
 
     
     def set_input(self, str):
-        # called by the ViewController after a READ command to set user input into memory
+        # called by the ViewController after a READ instruction to set user input into memory
         self._memory_list[self._IO_address - 1] = str
 
 
 
     def run_instructions(self):
-        """ Loops through instructions in memory executing each one in order
-            Returns a status code in case of I/O or halt commands. Or in case of memory or execution error.
-            LIST OF STATUS CODES
-            - read
-            - write
-            - halt
-            - command format error
-            - memory range error
-            - zero division error
-        """
+        # Loops through instructions in memory executing each one in order
+        # Returns a memory status for I/O instruction, halt instruction, or execution error.
         
         # begin loop of memory execution
         while True:
             # this check is neccessary if there is no HALT instruction present
             if self._instruction_pointer < 0 or self._instruction_pointer > 99:
-                return "memory range error"
+                self.memory_error = MemoryError(MET.MEMORY_RANGE)
+                return MemoryStatus.ERROR
             instruction = self._memory_list[self._instruction_pointer]
 
-            #TODO add a regex to check for invalid instruction format here
-            if len(instruction) != 5:
-                return "command format error"
-
-            # parse instruction into command and address parts
-            command = instruction[1:3]
+            # validates 4 and 5 digit length instructions
+            instruction_regex = "^[+](([1][0])|([1][1])|([2][0])|([2][1])|([3][0])|([3][1])|([3][2])|([3][3])|([4][0])|([4][1])|([4][2])|([4][3]))\d\d\d?$"
+            if re.search(instruction_regex, instruction) is None:
+                self.memory_error = MemoryError(MET.INSTRUCTION_FORMAT, self._instruction_pointer + 1, instruction)
+                return MemoryStatus.ERROR
+            
+            # parse instruction into operation and address parts
+            instruction_type = instruction[1:3]
             # rememeber that addresses are 1 based but the memory list is zero based
-            address = int(instruction[3:])
+            instruction_address = int(instruction[3:])
 
-            if command != "43" and (address < 1 or address > 100):
-                return "memory range error"
+            # check that instruction_address is in memory range
+            if instruction_type != InstructionType.HALT.value and (instruction_address < 1 or instruction_address > 100):
+                self.memory_error = MemoryError(MET.INSTRUCTION_RANGE, self._instruction_pointer + 1, instruction)
+                return MemoryStatus.ERROR
 
             # update next instruction in memory to be run
             self._instruction_pointer += 1
 
-            # READ command
-            if command == "10":
+            # READ instruction
+            if instruction_type == InstructionType.READ.value:
                 # set the memory address that the user input will be set to.
-                self._IO_address = address
-                return "read"
+                self._IO_address = instruction_address
+                return MemoryStatus.READ
             
-            # WRITE command
-            elif command == "11":
+            # WRITE instruction
+            elif instruction_type == InstructionType.WRITE.value:
                 # set the memory address for where the output value is.
-                self._IO_address = address
-                return "write"
+                self._IO_address = instruction_address
+                return MemoryStatus.WRITE
 
-            # LOAD command
-            elif command == "20":
+            # LOAD instruction
+            elif instruction_type == InstructionType.LOAD.value:
                 # sets the accumulator value from memory
-                self._accumulator = int(self._memory_list[address - 1])
+                self._accumulator = int(self._memory_list[instruction_address - 1])
                 continue
 
-            # STORE command
-            elif command == "21":
+            # STORE instruction
+            elif instruction_type == InstructionType.STORE.value:
                 # saves the accumulator value into memory
-                self._memory_list[address - 1] = str(self._accumulator)
+                self._memory_list[instruction_address - 1] = str(self._accumulator)
                 continue
 
-            # ADD command
-            elif command == "30":
-                self._accumulator = Add.execute(self._accumulator, int(self._memory_list[address]))
+            # ADD instruction
+            elif instruction_type == InstructionType.ADD.value:
+                self._accumulator = Add.execute(self._accumulator, int(self._memory_list[instruction_address - 1]))
                 continue
 
-            # SUBTRACT command
-            elif command == "31":
-                self._accumulator = Subtract.execute(self._accumulator, int(self._memory_list[address]))
+            # SUBTRACT instruction
+            elif instruction_type == InstructionType.SUBTRACT.value:
+                self._accumulator = Subtract.execute(self._accumulator, int(self._memory_list[instruction_address - 1]))
                 continue
 
-            # DIVIDE command
-            elif command == "32":
+            # DIVIDE instruction
+            elif instruction_type == InstructionType.DIVIDE.value:
                 try:
-                    self._accumulator = Divide.execute(self._accumulator, int(self._memory_list[address]))
+                    self._accumulator = Divide.execute(self._accumulator, int(self._memory_list[instruction_address - 1]))
                 except ZeroDivisionError:
-                    return "zero division error"
+                    self.memory_error = MemoryError(MET.ZERO_DIVISION, self._instruction_pointer + 1, instruction)
+                    return MemoryStatus.ERROR
                 continue
 
-            # MULITPLY command
-            elif command == "33":
-                self._accumulator = Multiply.execute(self._accumulator, int(self._memory_list[address]))
+            # MULITPLY instruction
+            elif instruction_type == InstructionType.MULTIPLY.value:
+                self._accumulator = Multiply.execute(self._accumulator, int(self._memory_list[instruction_address - 1]))
                 continue
 
-            # BRANCH command
-            elif command == "40":
-                self._instruction_pointer = address
+            # BRANCH instruction
+            elif instruction_type == InstructionType.BRANCH.value:
+                self._instruction_pointer = instruction_address - 1
                 continue
 
-            # BRANCHNEG command
-            elif command == "41":
+            # BRANCHNEG instruction
+            elif instruction_type == InstructionType.BRANCH_NEG.value:
                 if BranchNeg.execute(self._accumulator):
-                    self._instruction_pointer = address
+                    self._instruction_pointer = instruction_address - 1
                 continue
 
-            # BRANCHZERO command
-            elif command == "42":
+            # BRANCHZERO instruction
+            elif instruction_type == InstructionType.BRANCH_ZERO.value:
                 if BranchZero.execute(self._accumulator):
-                    self._instruction_pointer = address
+                    self._instruction_pointer = instruction_address - 1
                 continue
 
-            # HALT command
-            elif command == "43":
-                return "halt"
+            # HALT instruction
+            elif instruction_type == InstructionType.HALT.value:
+                return MemoryStatus.HALT
 
             else:
-                return "command format error"
+                raise Exception("bad memory logic")
 
         # end execution loop
         

@@ -1,6 +1,7 @@
-from memory import Memory
+from memory import Memory, MemoryStatus
 import tkinter as tk
 from text_file_manager import TextFileManager as TFM
+
 # from GUI import DataGUI (this line causes a circular import error)
 
 # TODO show the active open file on the UI somewhere
@@ -12,7 +13,6 @@ class ViewController:
         self.file_address = ""
 
     def run_button_clicked(self):
-        # TODO Clear the console
         # Grabs instruction text from memory editor text box
         # Create the Memory object and start it running
         # Wait for return status
@@ -29,29 +29,26 @@ class ViewController:
             #start memory running
             execution_status = self.current_memory.run_instructions()
 
-            if execution_status == "halt":
+            if execution_status == MemoryStatus.HALT:
                 # end execution
-                self.view.output_to_console("\nProgram Ended (status 43 : HALT command)")
+                self.view.output_to_console("\nProgram Ended Successfully (43 HALT instruction)")
+                return
+            
+            elif execution_status == MemoryStatus.ERROR:
+                # print error description, end execution
+                self.view.output_to_console(self.current_memory.memory_error.description())
                 return
 
-            elif execution_status == "read":
+            elif execution_status == MemoryStatus.READ:
+                # save user input to memory, resume execution
                 user_input = self.view.get_user_input()
                 self.current_memory.set_input(user_input)
                 continue
 
-            elif execution_status == "write":
+            elif execution_status == MemoryStatus.WRITE:
+                # print to console, resume execution
                 self.view.output_to_console(self.current_memory.get_output())
                 continue
-
-            elif execution_status == "memory range error":
-                # end execution
-                self.view.output_to_console("\nProgram Ended (status : memory range error)")
-                return
-            
-            elif execution_status == "command format error":
-                # end execution
-                self.view.output_to_console("\nProgram Ended (status : commmand format error)")
-                return
             
             else:
                 raise Exception("STATUS CODE ERROR")

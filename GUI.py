@@ -20,7 +20,7 @@ class DataGUI:
         self.cwd_frame = tk.Frame(self.left_frame, bg=self.theme_color)
         self.cwd_frame.pack(anchor="w", padx=5, pady=5)
 
-        self.current_dir_text = tk.Text(self.cwd_frame, height=1, bg=self.off_color)
+        self.current_dir_text = tk.Text(self.cwd_frame, height=1, bg=self.off_color, width=119)
         self.current_dir_text.pack(fill=tk.X, padx=5)
 
 
@@ -130,6 +130,7 @@ class DataGUI:
                 self.left_frame.configure(bg=primary_color)
                 self.right_frame.configure(bg=primary_color)
                 self.buttons_frame.configure(bg=primary_color)
+                self.cwd_frame.configure(bg=primary_color)
                 self.theme_color = primary_color  # Update theme color attribute
             
             if off_color:

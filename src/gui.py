@@ -53,7 +53,7 @@ class DataGUI:
         self.memory_tree.pack(expand=True, fill=tk.BOTH, padx=20)
         self.memory_tree.column('Column 1', width=10, minwidth=30)
 
-        self.update_memory_tree(["0"] * 100)
+        self.update_memory_tree(["0"] * 250)
 
     def clear_console(self):
         self.data_entry.delete('1.0', tk.END)
@@ -85,7 +85,7 @@ class DataGUI:
         for row in self.memory_tree.get_children():
             self.memory_tree.delete(row)
         
-        for i in range(100):
+        for i in range(250):
             instruction = str(values[i]) if i < len(values) else ""
             self.memory_tree.insert('', 'end', value=(i+1, instruction), text=(instruction))
 

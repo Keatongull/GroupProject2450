@@ -57,6 +57,7 @@ class ViewController:
     def open_button_clicked(self):
         # opens file browser for user to select a text file to open. Inserts file contents to memory editor
         open_address = TFM.get_file_path_from_browser()
+        self.view.clear_wrk_add()
         if open_address == "":
             # the file browser was cancelled
             return
@@ -67,6 +68,7 @@ class ViewController:
         self.file_address = open_address
         self.view.update_memory_tree(instructions)
         self.view.output_to_console("Active File Set To " + open_address)
+        self.view.output_wrk_add("Active File " + open_address)
 
     def save_button_clicked(self):
         # saves to the active open file, otherwise asks create a new file, then sets it as active

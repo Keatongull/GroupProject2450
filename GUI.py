@@ -17,6 +17,12 @@ class DataGUI:
         self.right_frame = tk.Frame(self.root, bg=self.theme_color)
         self.right_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=10, pady=10)
 
+        self.cwd_frame = tk.Frame(self.left_frame, bg=self.theme_color)
+        self.cwd_frame.pack(anchor="w", padx=5, pady=5)
+
+        self.current_dir_text = tk.Text(self.cwd_frame, height=1, bg=self.off_color)
+        self.current_dir_text.pack(fill=tk.X, padx=5)
+
 
         # Data entry references the console
         self.data_entry = tk.Text(self.left_frame, bg=self.off_color)
@@ -51,6 +57,9 @@ class DataGUI:
 
     def clear_console(self):
         self.data_entry.delete('1.0', tk.END)
+
+    def clear_wrk_add(self):
+        self.current_dir_text.delete('1.0', tk.END)
 
 
     def edit_cell(self):
@@ -87,6 +96,10 @@ class DataGUI:
         # Outputs text to console
         self.data_entry.insert(tk.END, text)
         self.insert_newline_in_console()
+
+    def output_wrk_add(self, text):
+        self.current_dir_text.insert(tk.END, text)
+
 
     def get_mem_data(self):
         mem_data_list = []

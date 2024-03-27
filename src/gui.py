@@ -9,8 +9,11 @@ class DataGUI:
         self.root = root
         self.viewController = ViewController(self)
         self.root.title("Data Table GUI")
+        self.theme_color = '#0F5132'
+        self.off_color = '#FFFFFF'
         
         self.load_config()  # Load theme from config file
+        self.root['bg'] = self.theme_color
 
         self.left_frame = tk.Frame(self.root, bg=self.theme_color)
         self.left_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=10, pady=10)
@@ -53,7 +56,7 @@ class DataGUI:
         self.memory_tree.pack(expand=True, fill=tk.BOTH, padx=20)
         self.memory_tree.column('Column 1', width=10, minwidth=30)
 
-        self.update_memory_tree(["0"] * 250)
+        self.update_memory_tree(["0"] * 100)
 
     def clear_console(self):
         self.data_entry.delete('1.0', tk.END)
@@ -85,7 +88,7 @@ class DataGUI:
         for row in self.memory_tree.get_children():
             self.memory_tree.delete(row)
         
-        for i in range(250):
+        for i in range(100):
             instruction = str(values[i]) if i < len(values) else ""
             self.memory_tree.insert('', 'end', value=(i+1, instruction), text=(instruction))
 
@@ -161,6 +164,8 @@ class DataGUI:
         treeview_style = ttk.Style()
         # Set the background color for the Treeview widget
         treeview_style.configure("Treeview", background=self.off_color)
+        self.current_dir_text.configure(bg=self.off_color)
+
 
 
     def load_config(self):
@@ -182,3 +187,12 @@ class DataGUI:
             print("Config saved successfully")
         except Exception as e:
             print("Error saving config:", e)  # Error handling
+
+
+    def configure_frames(self):
+        # Configure frame colors
+        self.root.configure(bg=self.theme_color)
+        self.left_frame.configure(bg=self.theme_color)
+        self.right_frame.configure(bg=self.theme_color)
+        self.buttons_frame.configure(bg=self.theme_color)
+        self.cwd_frame.configure(bg=self.theme_color)

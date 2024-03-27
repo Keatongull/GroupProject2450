@@ -19,7 +19,7 @@ class ViewController:
         
         instruction_list = self.view.get_mem_data()
         # stop program from running if memory is too large
-        if len(instruction_list) > 100:
+        if len(instruction_list) > Memory.MAX_MEMORY_SIZE:
             self.view.output_to_console("Runtime memory cannot exceed 100 instructions. Please remove excess lines from editor and try again.")
             return
         

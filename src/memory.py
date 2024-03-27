@@ -5,7 +5,6 @@ from enum import Enum
 
 # TODO add operand type error checking for all instructions
 
-
 class MemoryStatus(Enum):
     # status codes returned by memory when execution is paused
     READ = "read"
@@ -15,19 +14,21 @@ class MemoryStatus(Enum):
 
 
 class Memory:
+
+    MAX_MEMORY_SIZE = 250  # the maximum amount of lines in memory.
     
     # requires a string list of instructions to initialize
     def __init__(self, instructionList):
-        if len(instructionList) > 100:
+        if len(instructionList) > Memory.MAX_MEMORY_SIZE:
             raise Exception("instruction list exceeds memory limit")
         
         #Public Properties
         self.memory_error = None       # contains the error object when an error status is returned
-        self._memory_list = ["0"] * 100 # create empty memory and then fill in instructions
-        for i in range(len(instructionList)):
-            self._memory_list[i] = instructionList[i]
 
         # Private Properties
+        self._memory_list = ["0"] * Memory.MAX_MEMORY_SIZE # create empty memory and then fill in instructions
+        for i in range(len(instructionList)):
+            self._memory_list[i] = instructionList[i]
         self._accumulator = 0          # integer used for internal computation
         self._instruction_pointer = 0  # points to next location in memory to run
         self._IO_address = 0           # memory address used for I/O instruction_types
@@ -53,7 +54,7 @@ class Memory:
         # begin loop of memory execution
         while True:
             # this check is neccessary if there is no HALT instruction present
-            if self._instruction_pointer < 0 or self._instruction_pointer > 99:
+            if self._instruction_pointer < 0 or self._instruction_pointer > Memory.MAX_MEMORY_SIZE - 1:
                 self.memory_error = MemoryError(MET.MEMORY_RANGE)
                 return MemoryStatus.ERROR
             instruction = self._memory_list[self._instruction_pointer]
@@ -70,7 +71,7 @@ class Memory:
             instruction_address = int(instruction[3:])
 
             # check that instruction_address is in memory range
-            if instruction_type != InstructionType.HALT.value and (instruction_address < 1 or instruction_address > 100):
+            if instruction_type != InstructionType.HALT.value and (instruction_address < 1 or instruction_address > Memory.MAX_MEMORY_SIZE):
                 self.memory_error = MemoryError(MET.INSTRUCTION_RANGE, self._instruction_pointer + 1, instruction)
                 return MemoryStatus.ERROR
 
@@ -148,6 +149,4 @@ class Memory:
 
             else:
                 raise Exception("bad memory logic")
-
-        # end execution loop
         

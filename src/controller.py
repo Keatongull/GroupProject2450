@@ -52,8 +52,9 @@ class ViewController:
             
             else:
                 raise Exception("STATUS CODE ERROR")
-            
 
+
+# TODO Justis add functionality to check length of file if longer than 250 lines print error to console saying so.
     def open_button_clicked(self):
         # opens file browser for user to select a text file to open. Inserts file contents to memory editor
         open_address = TFM.get_file_path_from_browser()
@@ -89,4 +90,7 @@ class ViewController:
             code_text = "\n".join(self.view.get_mem_data())
             TFM.export_text_to_file(self.file_address, code_text)
             self.view.output_to_console("File Saved to " + self.file_address)
-        
+
+# TODO Justis
+    def display_active_file(self):
+        pass

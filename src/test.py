@@ -1,4 +1,4 @@
-from memory import Memory
+from ..src.memory import Memory
 
 # unit tests will go here
 

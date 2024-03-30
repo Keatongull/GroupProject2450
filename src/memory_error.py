@@ -6,7 +6,7 @@ class MemoryErrorType(Enum):
     INSTRUCTION_RANGE = "instruction range error"
     MEMORY_RANGE = "memory range error"
     ZERO_DIVISION = "zero division error"
-    INT_CONVERSION = "int conversion error"
+    NUMBER_CONVERSION = "int conversion error"
 
 class MemoryError():
     def __init__(self, error_type, line_num = 0, instruction = "", data = ""):
@@ -24,6 +24,6 @@ class MemoryError():
             return "\nProgram Stopped (Instruction traversal reached end of memory)"
         elif self._error_type == MemoryErrorType.ZERO_DIVISION:
             return "\nProgram Stopped (Divide operation \"{0}\" at line {1} resulted in zero divisor)".format(self._instruction, self._line_num)
-        elif self._error_type == MemoryErrorType.INT_CONVERSION:
+        elif self._error_type == MemoryErrorType.NUMBER_CONVERSION:
             return "\nProgram Stopped (Arithmetic operation \"{0}\" at line {1} could not operate on value \"{2}\")".format(self._instruction, self._line_num, self._data)
         

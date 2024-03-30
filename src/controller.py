@@ -89,4 +89,7 @@ class ViewController:
             code_text = "\n".join(self.view.get_mem_data())
             TFM.export_text_to_file(self.file_address, code_text)
             self.view.output_to_console("File Saved to " + self.file_address)
-        
+
+# TODO Justis
+    def display_active_file(self):
+        pass

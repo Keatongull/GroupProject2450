@@ -45,17 +45,22 @@ class DataGUI:
         self.save_button = tk.Button(self.buttons_frame, text="Save Code", command=self.viewController.save_button_clicked, width=17, height=2)
         self.save_button.grid(row=0, column=3, padx=5, pady=5)
         self.edit_cell_button = tk.Button(self.buttons_frame, text="Edit Memory", command=self.edit_cell, width=17, height=2)
-        self.edit_cell_button.grid(row=0, column=4, padx=5, pady=6)
+        self.edit_cell_button.grid(row=1, column=0, padx=5, pady=6)
         self.change_theme_button = tk.Button(self.buttons_frame, text="Change Theme", command=self.change_theme, width=17, height=2)
-        self.change_theme_button.grid(row=0, column=5, padx=5, pady=5)
+        self.change_theme_button.grid(row=1, column=1, padx=5, pady=5)
         self.exit_button = tk.Button(self.buttons_frame, text="Exit", command=root.destroy, width=17, height=2)
-        self.exit_button.grid(row=0, column=6, padx=5, pady=5)
+        self.exit_button.grid(row=1, column=2, padx=5, pady=5)
 
         self.memory_tree = ttk.Treeview(self.right_frame, columns=('Column 1', 'Column 2'), show='headings')
         self.memory_tree.heading('Column 1', text='Line #')
         self.memory_tree.heading('Column 2', text='Memory Editor')
         self.memory_tree.pack(expand=True, fill=tk.BOTH, padx=20)
         self.memory_tree.column('Column 1', width=10, minwidth=30)
+
+        self.file_tree = ttk.Treeview(self.left_frame, columns=('Column1'), show='headings', height=5)
+        self.file_tree.column('Column1', width=10)  # Adjust the width as needed
+        self.file_tree.heading('Column1', text='Open Files')
+        self.file_tree.pack(expand=True, fill=tk.BOTH, padx=20, pady=20, anchor=tk.CENTER)
 
         self.update_memory_tree(["0"] * Memory.MAX_MEMORY_SIZE)
 

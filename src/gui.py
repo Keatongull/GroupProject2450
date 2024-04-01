@@ -221,4 +221,4 @@ class DataGUI:
         selected_item = self.file_tree.selection()
 
         item_text = self.file_tree.item(selected_item)['values']
-        
+        print("Selected file: ", item_text[0])

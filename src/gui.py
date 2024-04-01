@@ -89,6 +89,18 @@ class DataGUI:
         else:
             messagebox.showwarning("Warning", "Please select a cell to edit.")
 
+    def update_file_tree(self):
+        self.file_tree.delete(*self.file_tree.get_children())
+
+        # Open the file for reading
+        with open('file_names.txt', 'r') as file:
+            # Read each line from the file
+            for line in file:
+                # Split each line into separate cells
+                cells = line.strip().split(',')
+                # Insert the cells into the tree
+                self.file_tree.insert('', 'end', values=cells)
+
 
 
     #updates the memory view with a list of values/instructions

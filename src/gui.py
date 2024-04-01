@@ -61,7 +61,7 @@ class DataGUI:
         self.file_tree.column('Column1', width=10)  # Adjust the width as needed
         self.file_tree.heading('Column1', text='Open Files')
         self.file_tree.pack(expand=True, fill=tk.BOTH, padx=20, pady=20, anchor=tk.CENTER)
-        self.file_tree.bind("<<TreeviewSelect>>", self.viewController.open_file_selected)
+        self.file_tree.bind("<<TreeviewSelect>>", self.open_file_selected)
 
 
         self.update_memory_tree(["0"] * Memory.MAX_MEMORY_SIZE)
@@ -216,3 +216,9 @@ class DataGUI:
         self.right_frame.configure(bg=self.theme_color)
         self.buttons_frame.configure(bg=self.theme_color)
         self.cwd_frame.configure(bg=self.theme_color)
+
+    def open_file_selected(self, event=None):
+        selected_item = self.file_tree.selection()
+
+        item_text = self.file_tree.item(selected_item)['values']
+        

@@ -104,5 +104,4 @@ class ViewController:
             file.write(name)
             file.write('\n')
 
-    def open_file_selected(self):
-        print("this is working")
+

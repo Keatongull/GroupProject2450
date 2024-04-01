@@ -61,6 +61,8 @@ class DataGUI:
         self.file_tree.column('Column1', width=10)  # Adjust the width as needed
         self.file_tree.heading('Column1', text='Open Files')
         self.file_tree.pack(expand=True, fill=tk.BOTH, padx=20, pady=20, anchor=tk.CENTER)
+        self.file_tree.bind("<<TreeviewSelect>>", self.viewController.open_file_selected)
+
 
         self.update_memory_tree(["0"] * Memory.MAX_MEMORY_SIZE)
 

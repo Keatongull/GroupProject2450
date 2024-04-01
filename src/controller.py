@@ -70,6 +70,7 @@ class ViewController:
         self.view.update_memory_tree(instructions)
         self.view.output_to_console("Active File Set To " + open_address)
         self.view.output_wrk_add("Active File " + open_address)
+        self.active_file_save(open_address)
 
     def save_button_clicked(self):
         # saves to the active open file, otherwise asks create a new file, then sets it as active
@@ -94,3 +95,13 @@ class ViewController:
 # TODO Justis
     def display_active_file(self):
         pass
+
+    def active_file_save(self, file_name):
+        file_txt = file_name.split('/')
+        name = file_txt[-1]
+        with open('file_names.txt', 'a') as file:
+            file.write(name)
+            file.write('\n')
+
+    def open_file_selected(self):
+        print("this is working")

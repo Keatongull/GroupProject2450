@@ -1,6 +1,7 @@
 from memory import Memory, MemoryStatus
 import tkinter as tk
 from text_file_manager import TextFileManager as TFM
+import os
 
 # from GUI import DataGUI (this line causes a circular import error)
 
@@ -54,7 +55,6 @@ class ViewController:
                 raise Exception("STATUS CODE ERROR")
 
 
-# TODO Justis add functionality to check length of file if longer than 250 lines print error to console saying so.
     def open_button_clicked(self):
         # opens file browser for user to select a text file to open. Inserts file contents to memory editor
         open_address = TFM.get_file_path_from_browser()
@@ -63,13 +63,22 @@ class ViewController:
             # the file browser was cancelled
             return
         
+        with open(open_address, 'r') as file:
+            line_count = sum(1 for line in file)
+
+        if line_count > 250:
+            self.view.output_to_console("Error: File contains more than 250 lines")
+            return
+
+        filename = self.extract_filename(open_address)
+        print(filename)
         codeText = TFM.import_text_from_file(open_address)
         instructions = codeText.split('\n')
         # set the new file_address after import in case any errors occurred
         self.file_address = open_address
         self.view.update_memory_tree(instructions)
-        self.view.output_to_console("Active File Set To " + open_address)
-        self.view.output_wrk_add("Active File " + open_address)
+        self.view.output_to_console("Active File Set To " + filename)
+        self.view.output_wrk_add("Active File " + filename)
         self.active_file_save(open_address)
         self.view.update_file_tree()
 
@@ -93,10 +102,12 @@ class ViewController:
             TFM.export_text_to_file(self.file_address, code_text)
             self.view.output_to_console("File Saved to " + self.file_address)
 
-# TODO Justis
-    def display_active_file(self, filename):
-        print('working')
+    def display_active_file(self):
+        pass
 
+    def extract_filename(self, file_path):
+        return os.path.basename(file_path)
+    
     def active_file_save(self, file_name):
         file_txt = file_name.split('/')
         name = file_txt[-1]

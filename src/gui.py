@@ -121,7 +121,8 @@ class DataGUI:
         self.insert_newline_in_console()
 
     def output_wrk_add(self, text):
-        self.current_dir_text.insert(tk.END, text)
+        filename = self.viewController.extract_filename(text)
+        self.current_dir_text.insert(tk.END, filename)
 
 
     def get_mem_data(self):
@@ -222,3 +223,4 @@ class DataGUI:
 
         item_text = self.file_tree.item(selected_item)['values']
         print("Selected file: ", item_text[0])
+

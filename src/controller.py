@@ -94,8 +94,8 @@ class ViewController:
             self.view.output_to_console("File Saved to " + self.file_address)
 
 # TODO Justis
-    def display_active_file(self):
-        pass
+    def display_active_file(self, filename):
+        print('working')
 
     def active_file_save(self, file_name):
         file_txt = file_name.split('/')

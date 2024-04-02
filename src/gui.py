@@ -109,7 +109,8 @@ class DataGUI:
         self.insert_newline_in_console()
 
     def output_wrk_add(self, text):
-        self.current_dir_text.insert(tk.END, text)
+        filename = self.viewController.extract_filename(text)
+        self.current_dir_text.insert(tk.END, filename)
 
 
     def get_mem_data(self):
@@ -204,3 +205,4 @@ class DataGUI:
         self.right_frame.configure(bg=self.theme_color)
         self.buttons_frame.configure(bg=self.theme_color)
         self.cwd_frame.configure(bg=self.theme_color)
+

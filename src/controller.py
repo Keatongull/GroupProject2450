@@ -80,6 +80,7 @@ class ViewController:
         self.view.output_to_console("Active File Set To " + filename)
         self.view.output_wrk_add("Active File " + filename)
         self.active_file_save(open_address)
+        self.view.update_file_tree()
 
     def save_button_clicked(self):
         # saves to the active open file, otherwise asks create a new file, then sets it as active
@@ -114,5 +115,4 @@ class ViewController:
             file.write(name)
             file.write('\n')
 
-    def open_file_selected(self):
-        print("this is working")
+

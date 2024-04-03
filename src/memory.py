@@ -1,5 +1,5 @@
-from memory_instructions import InstructionType, Add, Subtract, Divide, Multiply, BranchNeg, BranchZero
-from memory_error import MemoryError, MemoryErrorType as MET
+from .memory_instructions import InstructionType, Add, Subtract, Divide, Multiply, BranchNeg, BranchZero
+from .memory_error import MemoryError, MemoryErrorType as MET
 import re
 from enum import Enum
 

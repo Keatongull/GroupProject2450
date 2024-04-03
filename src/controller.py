@@ -1,6 +1,6 @@
-from memory import Memory, MemoryStatus
+from .memory import Memory, MemoryStatus
 import tkinter as tk
-from text_file_manager import TextFileManager as TFM
+from .text_file_manager import TextFileManager as TFM
 import os
 
 # from GUI import DataGUI (this line causes a circular import error)
@@ -79,7 +79,7 @@ class ViewController:
         # set the new file_address after import in case any errors occurred
         self.file_address = open_address
         self.view.update_memory_tree(instructions)
-        self.view.output_wrk_add(f'Active file set to: {file_name}')
+        self.view.output_wrk_add("Active File " + file_name)
         self.active_file_database(open_address, instructions)
         self.view.update_file_tree()
 

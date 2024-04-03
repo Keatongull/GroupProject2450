@@ -80,7 +80,7 @@ class ViewController:
         self.file_address = open_address
         self.view.update_memory_tree(instructions)
         self.view.output_wrk_add("Active File " + file_name)
-        self.active_file_save(open_address, instructions)
+        self.active_file_database(open_address, instructions)
         self.view.update_file_tree()
 
     def save_button_clicked(self):
@@ -109,7 +109,7 @@ class ViewController:
 
 
 
-    def active_file_save(self, file_name, instructions):
+    def active_file_database(self, file_name, instructions):
         file_txt = file_name.split('/')
         name = file_txt[-1]
         if {name: instructions} in self.file_dict:

@@ -19,11 +19,10 @@ class Memory:
     
     # requires a string list of instructions to initialize
     def __init__(self, instructionList):
-        if len(instructionList) > Memory.MAX_MEMORY_SIZE:
-            raise Exception("instruction list exceeds memory limit")
-        
+        assert len(instructionList) <= Memory.MAX_MEMORY_SIZE
+
         #Public Properties
-        self.memory_error = None       # contains the error object when an error status is returned
+        self.memory_error = None   # contains the error object when an error status is returned
 
         # Private Properties
         self._memory_list = ["0"] * Memory.MAX_MEMORY_SIZE # create empty memory and then fill in instructions
@@ -32,6 +31,13 @@ class Memory:
         self._accumulator = 0          # integer used for internal computation
         self._instruction_pointer = 0  # points to next location in memory to run
         self._IO_address = 0           # memory address used for I/O instruction_types
+
+        # determine instruction length by checking the first instruction
+        # set instruction_regex for validating 5 or 6 length instructions only
+        if len(self._memory_list[0]) == 5:
+            self._instruction_regex = "^[+](([1][0-1])|([2][0-1])|([3][0-3])|([4][0-3]))\d\d$"
+        else:
+            self._instruction_regex = "^[+](([1][0-1])|([2][0-1])|([3][0-3])|([4][0-3]))\d\d\d$"
         
 
 
@@ -50,7 +56,7 @@ class Memory:
     def run_instructions(self):
         # Loops through instructions in memory executing each one in order
         # Returns a memory status for I/O instruction, halt instruction, or execution error.
-        
+
         # begin loop of memory execution
         while True:
             # this check is neccessary if there is no HALT instruction present
@@ -59,11 +65,10 @@ class Memory:
                 return MemoryStatus.ERROR
             instruction = self._memory_list[self._instruction_pointer]
 
-            # validates 4 and 5 digit length instructions
-            instruction_regex = "^[+](([1][0])|([1][1])|([2][0])|([2][1])|([3][0])|([3][1])|([3][2])|([3][3])|([4][0])|([4][1])|([4][2])|([4][3]))\d\d\d?$"
-            if re.search(instruction_regex, instruction) is None:
-                self.memory_error = MemoryError(MET.INSTRUCTION_FORMAT, self._instruction_pointer + 1, instruction)
-                return MemoryStatus.ERROR
+            # check formatting of the instruction using regex
+            if re.search(self._instruction_regex, instruction) is None:
+                    self.memory_error = MemoryError(MET.INSTRUCTION_FORMAT, self._instruction_pointer + 1, instruction)
+                    return MemoryStatus.ERROR
             
             # parse instruction into operation and address parts
             instruction_type = instruction[1:3]

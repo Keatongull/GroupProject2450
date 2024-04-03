@@ -19,9 +19,9 @@ class ViewController:
         # Wait for return status
         
         instruction_list = self.view.get_mem_data()
-        # stop program from running if memory is too large
+        # if instruction_list is somehow too big, that means the memory editor is bugged
         if len(instruction_list) > Memory.MAX_MEMORY_SIZE:
-            self.view.output_to_console("Runtime memory cannot exceed 100 instructions. Please remove excess lines from editor and try again.")
+            self.view.output_to_console("ERROR: instructions lines in editor somehow exceeded max memory size.")
             return
         
         self.current_memory = Memory(instruction_list)
@@ -57,11 +57,13 @@ class ViewController:
 
     def open_button_clicked(self):
         # opens file browser for user to select a text file to open. Inserts file contents to memory editor
+
+        # get the filepath from the file browser
         open_address = TFM.get_file_path_from_browser()
-        self.view.clear_wrk_add()
         if open_address == "":
             # the file browser was cancelled
             return
+        self.view.clear_wrk_add()
         
         with open(open_address, 'r') as file:
             line_count = sum(1 for line in file)
@@ -77,7 +79,6 @@ class ViewController:
         # set the new file_address after import in case any errors occurred
         self.file_address = open_address
         self.view.update_memory_tree(instructions)
-        self.view.output_to_console("Active File Set To " + filename)
         self.view.output_wrk_add("Active File " + filename)
         self.active_file_save(open_address)
         self.view.update_file_tree()

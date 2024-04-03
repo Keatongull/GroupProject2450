@@ -92,14 +92,9 @@ class DataGUI:
     def update_file_tree(self):
         self.file_tree.delete(*self.file_tree.get_children())
 
-        # Open the file for reading
-        with open('file_names.txt', 'r') as file:
-            # Read each line from the file
-            for line in file:
-                # Split each line into separate cells
-                cells = line.strip().split(',')
-                # Insert the cells into the tree
-                self.file_tree.insert('', 'end', values=cells)
+        for saved_file in self.viewController.file_dict:
+            for file_name, instructions in saved_file.items():
+                self.file_tree.insert('', 'end', values=file_name)
 
 
 
@@ -220,7 +215,18 @@ class DataGUI:
 
     def open_file_selected(self, event=None):
         selected_item = self.file_tree.selection()
-
         item_text = self.file_tree.item(selected_item)['values']
-        print("Selected file: ", item_text[0])
+
+        # Clear existing entries in the memory tree
+        for row in self.memory_tree.get_children():
+            self.memory_tree.delete(row)
+
+        # Find the selected file in the list of dictionaries
+        for saved_file in self.viewController.file_dict:
+            for file_name, instructions in saved_file.items():
+                if file_name == item_text[0]:
+                    # Update the memory tree with instructions from the selected file
+                    self.update_memory_tree(instructions)
+                    break
+
 

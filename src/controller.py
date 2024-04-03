@@ -12,6 +12,7 @@ class ViewController:
         self.current_memory: Memory = None
         self.view = view
         self.file_address = ""
+        self.file_dict = []
 
     def run_button_clicked(self):
         # Grabs instruction text from memory editor text box
@@ -72,15 +73,15 @@ class ViewController:
             self.view.output_to_console("Error: File contains more than 250 lines")
             return
 
-        filename = self.extract_filename(open_address)
-        print(filename)
+        file_name = self.extract_filename(open_address)
+        print(file_name)
         codeText = TFM.import_text_from_file(open_address)
         instructions = codeText.split('\n')
         # set the new file_address after import in case any errors occurred
         self.file_address = open_address
         self.view.update_memory_tree(instructions)
-        self.view.output_wrk_add("Active File " + filename)
-        self.active_file_save(open_address)
+        self.view.output_wrk_add("Active File " + file_name)
+        self.active_file_save(open_address, instructions)
         self.view.update_file_tree()
 
     def save_button_clicked(self):
@@ -103,17 +104,20 @@ class ViewController:
             TFM.export_text_to_file(self.file_address, code_text)
             self.view.output_to_console("File Saved to " + self.file_address)
 
-    def display_active_file(self):
-        pass
 
     def extract_filename(self, file_path):
         return os.path.basename(file_path)
-    
-    def active_file_save(self, file_name):
+
+
+
+    def active_file_save(self, file_name, instructions):
         file_txt = file_name.split('/')
         name = file_txt[-1]
-        with open('file_names.txt', 'a') as file:
-            file.write(name)
-            file.write('\n')
+        if {name: instructions} in self.file_dict:
+            print("file already open")
+        else:
+            self.file_dict.append({name: instructions})
+
+
 
 

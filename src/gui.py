@@ -116,6 +116,7 @@ class DataGUI:
         self.insert_newline_in_console()
 
     def output_wrk_add(self, text):
+        self.clear_wrk_add()
         filename = self.viewController.extract_filename(text)
         self.current_dir_text.insert(tk.END, filename)
 
@@ -227,6 +228,7 @@ class DataGUI:
                 if file_name == item_text[0]:
                     # Update the memory tree with instructions from the selected file
                     self.update_memory_tree(instructions)
+                    self.output_wrk_add(file_name)
                     break
 
 

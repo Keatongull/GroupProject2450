@@ -74,7 +74,6 @@ class ViewController:
             return
 
         file_name = self.extract_filename(open_address)
-        print(file_name)
         codeText = TFM.import_text_from_file(open_address)
         instructions = codeText.split('\n')
         # set the new file_address after import in case any errors occurred
@@ -117,7 +116,4 @@ class ViewController:
             print("file already open")
         else:
             self.file_dict.append({name: instructions})
-
-
-
 

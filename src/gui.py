@@ -24,12 +24,12 @@ class DataGUI:
         self.cwd_frame = tk.Frame(self.left_frame, bg=self.theme_color)
         self.cwd_frame.pack(anchor="w", padx=5, pady=5)
 
-        self.current_dir_text = tk.Text(self.cwd_frame, height=1, fg="black", bg=self.off_color, width=119)
+        self.current_dir_text = tk.Text(self.cwd_frame, height=1, bg=self.off_color, width=119)
         self.current_dir_text.pack(fill=tk.X, padx=5)
 
 
         # Data entry references the console
-        self.data_entry = tk.Text(self.left_frame, fg="black", bg=self.off_color)
+        self.data_entry = tk.Text(self.left_frame, bg=self.off_color)
         self.data_entry.pack(fill=tk.BOTH, expand=True, pady=5)
         self.data_entry.bind("<Return>", self.insert_newline_in_console)
 

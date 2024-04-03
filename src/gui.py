@@ -228,7 +228,7 @@ class DataGUI:
                 if file_name == item_text[0]:
                     # Update the memory tree with instructions from the selected file
                     self.update_memory_tree(instructions)
-                    self.output_wrk_add(file_name)
+                    self.output_wrk_add(f'Active file set to: {file_name}')
                     break
 
 

@@ -79,7 +79,7 @@ class ViewController:
         # set the new file_address after import in case any errors occurred
         self.file_address = open_address
         self.view.update_memory_tree(instructions)
-        self.view.output_wrk_add("Active File " + file_name)
+        self.view.output_wrk_add(f'Active file set to: {file_name}')
         self.active_file_database(open_address, instructions)
         self.view.update_file_tree()
 

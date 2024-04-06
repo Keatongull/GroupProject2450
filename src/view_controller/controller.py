@@ -1,6 +1,6 @@
-from .memory import Memory, MemoryStatus
+from src.memory.memory import Memory, MemoryStatus
 import tkinter as tk
-from .text_file_manager import TextFileManager as TFM
+from src.text_file_manager import TextFileManager as TFM
 import os
 
 # from GUI import DataGUI (this line causes a circular import error)
@@ -26,6 +26,7 @@ class ViewController:
             return
         
         self.current_memory = Memory(instruction_list)
+        self.view.output_to_console("\n---- Starting Program Execution ----")
 
         while True:
             #start memory running
@@ -33,7 +34,7 @@ class ViewController:
 
             if execution_status == MemoryStatus.HALT:
                 # end execution
-                self.view.output_to_console("\nProgram Ended Successfully (43 HALT instruction)")
+                self.view.output_to_console("Program Ended Successfully (43 HALT instruction)")
                 return
             
             elif execution_status == MemoryStatus.ERROR:
@@ -66,6 +67,7 @@ class ViewController:
             return
         self.view.clear_wrk_add()
         
+        # TODO this can be removed and instead checked after we open the file below
         with open(open_address, 'r') as file:
             line_count = sum(1 for line in file)
 

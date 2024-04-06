@@ -17,13 +17,13 @@ class MemoryError():
 
     def description(self):
         if self._error_type == MemoryErrorType.INSTRUCTION_FORMAT:
-            return "\nProgram Stopped (Invalid instruction format of \"{0}\" at line {1})".format(self._instruction, self._line_num)
+            return "Program Stopped (Invalid instruction format of \"{0}\" at line {1})".format(self._instruction, self._line_num)
         elif self._error_type == MemoryErrorType.INSTRUCTION_RANGE:
-            return "\nProgram Stopped (Instruction address \"{0}\" at line {1} is outside memory range)".format(self._instruction, self._line_num)
+            return "Program Stopped (Instruction address \"{0}\" at line {1} is outside memory range)".format(self._instruction, self._line_num)
         elif self._error_type == MemoryErrorType.MEMORY_RANGE:
-            return "\nProgram Stopped (Instruction traversal reached end of memory)"
+            return "Program Stopped (Instruction traversal reached end of memory)"
         elif self._error_type == MemoryErrorType.ZERO_DIVISION:
-            return "\nProgram Stopped (Divide operation \"{0}\" at line {1} resulted in zero divisor)".format(self._instruction, self._line_num)
+            return "Program Stopped (Divide operation \"{0}\" at line {1} resulted in zero divisor)".format(self._instruction, self._line_num)
         elif self._error_type == MemoryErrorType.NUMBER_CONVERSION:
-            return "\nProgram Stopped (Arithmetic operation \"{0}\" at line {1} could not operate on value \"{2}\")".format(self._instruction, self._line_num, self._data)
+            return "Program Stopped (Arithmetic operation \"{0}\" at line {1} could not operate on value \"{2}\")".format(self._instruction, self._line_num, self._data)
         

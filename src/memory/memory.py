@@ -1,5 +1,11 @@
-from .memory_instructions import InstructionType, Add, Subtract, Divide, Multiply, BranchNeg, BranchZero
-from .memory_error import MemoryError, MemoryErrorType as MET
+import sys
+import os
+
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.dirname(SCRIPT_DIR))
+
+from memory.memory_instructions import InstructionType, Add, Subtract, Divide, Multiply, BranchNeg, BranchZero
+from memory.memory_error import MemoryError, MemoryErrorType as MET
 import re
 from enum import Enum
 

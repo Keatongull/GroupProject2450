@@ -8,8 +8,8 @@ import tkinter as tk
 from tkinter import simpledialog, messagebox
 from tkinter import ttk
 import configparser
-from src.controller import ViewController
-from src.memory import Memory
+from src.view_controller.controller import ViewController
+from src.memory.memory import Memory
 
 class DataGUI:
     def __init__(self, root):

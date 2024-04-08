@@ -5,7 +5,8 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.dirname(SCRIPT_DIR))
 
 from memory.memory_instructions import InstructionType, Add, Subtract, Divide, Multiply, BranchNeg, BranchZero
-from memory.memory_error import MemoryError, MemoryErrorType as MET
+from memory.memory_error import MemoryErrorType as MET
+from memory.memory_error import *
 import re
 from enum import Enum
 
@@ -67,13 +68,13 @@ class Memory:
         while True:
             # this check is neccessary if there is no HALT instruction present
             if self._instruction_pointer < 0 or self._instruction_pointer > Memory.MAX_MEMORY_SIZE - 1:
-                self.memory_error = MemoryError(MET.MEMORY_RANGE)
+                self.memory_error = MemoryRangeError()
                 return MemoryStatus.ERROR
             instruction = self._memory_list[self._instruction_pointer]
 
             # check formatting of the instruction using regex
             if re.search(self._instruction_regex, instruction) is None:
-                    self.memory_error = MemoryError(MET.INSTRUCTION_FORMAT, self._instruction_pointer + 1, instruction)
+                    self.memory_error = InstructionFormatError(self._instruction_pointer + 1, instruction)
                     return MemoryStatus.ERROR
             
             # parse instruction into operation and address parts
@@ -83,7 +84,7 @@ class Memory:
 
             # check that instruction_address is in memory range
             if instruction_type != InstructionType.HALT.value and (instruction_address < 1 or instruction_address > Memory.MAX_MEMORY_SIZE):
-                self.memory_error = MemoryError(MET.INSTRUCTION_RANGE, self._instruction_pointer + 1, instruction)
+                self.memory_error = InstructionRangeError(self._instruction_pointer + 1, instruction)
                 return MemoryStatus.ERROR
 
             # update next instruction in memory to be run
@@ -104,7 +105,11 @@ class Memory:
             # LOAD instruction
             elif instruction_type == InstructionType.LOAD.value:
                 # sets the accumulator value from memory
-                self._accumulator = int(self._memory_list[instruction_address - 1])
+                try:
+                    self._accumulator = float(self._memory_list[instruction_address - 1])
+                except ValueError:
+                    self.memory_error = AccumulatorConversionError(self._instruction_pointer, instruction, self._memory_list[instruction_address - 1])
+                    return MemoryStatus.ERROR
                 continue
 
             # STORE instruction
@@ -115,26 +120,41 @@ class Memory:
 
             # ADD instruction
             elif instruction_type == InstructionType.ADD.value:
-                self._accumulator = Add.execute(self._accumulator, int(self._memory_list[instruction_address - 1]))
+                try:
+                    self._accumulator = Add.execute(self._accumulator, float(self._memory_list[instruction_address - 1]))
+                except ValueError:
+                    self.memory_error = NumberConversionError(self._instruction_pointer, instruction, self._memory_list[instruction_address - 1])
+                    return MemoryStatus.ERROR
                 continue
 
             # SUBTRACT instruction
             elif instruction_type == InstructionType.SUBTRACT.value:
-                self._accumulator = Subtract.execute(self._accumulator, int(self._memory_list[instruction_address - 1]))
+                try:
+                    self._accumulator = Subtract.execute(self._accumulator, float(self._memory_list[instruction_address - 1]))
+                except ValueError:
+                    self.memory_error = NumberConversionError(self._instruction_pointer, instruction, self._memory_list[instruction_address - 1])
+                    return MemoryStatus.ERROR
                 continue
 
             # DIVIDE instruction
             elif instruction_type == InstructionType.DIVIDE.value:
                 try:
-                    self._accumulator = Divide.execute(self._accumulator, int(self._memory_list[instruction_address - 1]))
+                    self._accumulator = Divide.execute(self._accumulator, float(self._memory_list[instruction_address - 1]))
                 except ZeroDivisionError:
-                    self.memory_error = MemoryError(MET.ZERO_DIVISION, self._instruction_pointer + 1, instruction)
+                    self.memory_error = ZeroDivError(self._instruction_pointer, instruction)
+                    return MemoryStatus.ERROR
+                except ValueError:
+                    self.memory_error = NumberConversionError(self._instruction_pointer, instruction, self._memory_list[instruction_address - 1])
                     return MemoryStatus.ERROR
                 continue
 
             # MULITPLY instruction
             elif instruction_type == InstructionType.MULTIPLY.value:
-                self._accumulator = Multiply.execute(self._accumulator, int(self._memory_list[instruction_address - 1]))
+                try:
+                    self._accumulator = Multiply.execute(self._accumulator, float(self._memory_list[instruction_address - 1]))
+                except ValueError:
+                    self.memory_error = NumberConversionError(self._instruction_pointer, instruction, self._memory_list[instruction_address - 1])
+                    return MemoryStatus.ERROR
                 continue
 
             # BRANCH instruction

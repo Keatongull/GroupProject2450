@@ -91,7 +91,7 @@ class DataGUI:
             if new_value is not None:
                 self.memory_tree.item(selected_item, values=(current_line, new_value), text=new_value)
                 messagebox.showinfo("Success", "Cell updated successfully.")
-                self.get_mem_data()
+                self.get_mem_data()  # This should be self.view.get_mem_data() instead
         else:
             messagebox.showwarning("Warning", "Please select a cell to edit.")
 

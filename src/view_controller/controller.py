@@ -119,3 +119,17 @@ class ViewController:
         else:
             self.file_dict.append({name: instructions})
 
+    def update_file_dict_with_memory(self):
+        """
+        Update the file_dict with the values from memory.
+        """
+        if self.current_memory:
+            file_name = os.path.basename(self.file_address)
+            instructions = self.get_mem_data()
+            for file_entry in self.file_dict:
+                if file_name in file_entry:
+                    file_entry[file_name] = instructions
+                    break
+            else:
+                self.file_dict.append({file_name: instructions})
+            self.view.update_file_tree()

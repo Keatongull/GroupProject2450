@@ -12,7 +12,7 @@ class ViewController:
         self.current_memory: Memory = None
         self.view = view
         self.file_address = ""
-        self.file_dict = []
+        self.file_dict = {}
 
     def run_button_clicked(self):
         # Grabs instruction text from memory editor text box
@@ -82,7 +82,7 @@ class ViewController:
         self.file_address = open_address
         self.view.update_memory_tree(instructions)
         self.view.output_wrk_add("Active File " + file_name)
-        self.active_file_database(open_address, instructions)
+        self.update_file_database(open_address, instructions)
         self.view.update_file_tree()
 
     def save_button_clicked(self):
@@ -111,13 +111,13 @@ class ViewController:
 
 
 
-    def active_file_database(self, file_name, instructions):
+    def update_file_database(self, file_name, instructions):
         file_txt = file_name.split('/')
         name = file_txt[-1]
-        if {name: instructions} in self.file_dict:
-            print("file already open")
-        else:
-            self.file_dict.append({name: instructions})
+        # if {name: instructions} in self.file_dict:
+        #     print("file already open")
+        # else:
+        self.file_dict.update({name: instructions})
 
     def update_file_dict_with_memory(self):
         """

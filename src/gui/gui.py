@@ -90,17 +90,15 @@ class DataGUI:
 
             if new_value is not None:
                 self.memory_tree.item(selected_item, values=(current_line, new_value), text=new_value)
-                messagebox.showinfo("Success", "Cell updated successfully.")
-                self.get_mem_data()  # This should be self.view.get_mem_data() instead
+                self.viewController.file_dict.update({self.viewController.file_address: self.get_mem_data()})
         else:
             messagebox.showwarning("Warning", "Please select a cell to edit.")
 
     def update_file_tree(self):
         self.file_tree.delete(*self.file_tree.get_children())
 
-        for saved_file in self.viewController.file_dict:
-            for file_name, instructions in saved_file.items():
-                self.file_tree.insert('', 'end', values=file_name)
+        for _key in self.viewController.file_dict.keys():
+            self.file_tree.insert('', 'end', values=_key)
 
 
 
@@ -229,12 +227,11 @@ class DataGUI:
             self.memory_tree.delete(row)
 
         # Find the selected file in the list of dictionaries
-        for saved_file in self.viewController.file_dict:
-            for file_name, instructions in saved_file.items():
-                if file_name == item_text[0]:
-                    # Update the memory tree with instructions from the selected file
-                    self.update_memory_tree(instructions)
-                    self.output_wrk_add(f'Active file set to: {file_name}')
-                    break
+        for file in self.viewController.file_dict.keys():
+            if file == item_text[0]:
+                # Update the memory tree with instructions from the selected file
+                self.update_memory_tree(self.viewController.file_dict.get(item_text[0]))
+                self.output_wrk_add(f'Active file set to: {item_text[0]}')
+                break
 
 

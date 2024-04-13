@@ -16,6 +16,7 @@ BUTTONS
 
 **NOTE: There are some mac compatability issues, for best results use windows**
 
-This is our meeting notes.
-https://docs.google.com/document/d/1W7JCp4B4upx5zzoY-JagPNRcurF5F3yMOh_PcquAHUo/edit
+These are our most recent meeting notes.
+
+[https://docs.google.com/document/d/1W7JCp4B4upx5zzoY-JagPNRcurF5F3yMOh_PcquAHUo/edit](https://docs.google.com/document/d/1LzPhVorZzrNkqpky-Ah3_JBL6zPPDPlGsSRBJmTq0EQ/edit)
 

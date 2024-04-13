@@ -90,13 +90,12 @@ class DataGUI:
 
             if new_value is not None:
                 self.memory_tree.item(selected_item, values=(current_line, new_value), text=new_value)
-                self.viewController.file_dict.update({self.viewController.file_address: self.get_mem_data()})
+                self.viewController.file_dict.update({self.viewController.extract_filename(self.viewController.file_address): self.get_mem_data()})
         else:
             messagebox.showwarning("Warning", "Please select a cell to edit.")
 
     def update_file_tree(self):
         self.file_tree.delete(*self.file_tree.get_children())
-
         for _key in self.viewController.file_dict.keys():
             self.file_tree.insert('', 'end', values=_key)
 
@@ -221,11 +220,9 @@ class DataGUI:
     def open_file_selected(self, event=None):
         selected_item = self.file_tree.selection()
         item_text = self.file_tree.item(selected_item)['values']
-
         # Clear existing entries in the memory tree
         for row in self.memory_tree.get_children():
             self.memory_tree.delete(row)
-
         # Find the selected file in the list of dictionaries
         for file in self.viewController.file_dict.keys():
             if file == item_text[0]:

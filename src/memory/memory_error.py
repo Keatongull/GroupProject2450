@@ -42,20 +42,3 @@ class NumberConversionError(MemoryError):
 class AccumulatorConversionError(MemoryError):
     def description(self):
         return "\nProgram Stopped (Load operation \"{0}\" at line {1} could not convert value \"{2}\")".format(self._instruction, self._line_num, self._data)
-
-# Alternatively could have the init inside each child class depending on what they need. Something like this?
-# class InstructionFormatError(MemoryError):
-#     def __init__(self, line_num=0, instruction=""):
-#         self._line_num = line_num
-#         self._instruction = instruction
-
-#     def description(self):
-#         return "\nProgram Stopped (Invalid instruction format of \"{0}\" at line {1})".format(self._instruction, self._line_num)
-
-# class InstructionRangeError(MemoryError):
-#     def __init__(self, instruction=""):
-#         self._instruction = instruction
-
-#     def description(self):
-#         return "\nProgram Stopped (Instruction address \"{0}\" is outside memory range)".format(self._instruction)
-        

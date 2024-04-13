@@ -88,9 +88,12 @@ class DataGUI:
 
             new_value = simpledialog.askstring("Edit Cell", "Enter new value:", initialvalue=current_value)
 
+            #check if user cancelled
             if new_value is not None:
                 self.memory_tree.item(selected_item, values=(current_line, new_value), text=new_value)
-                self.viewController.file_dict.update({self.viewController.extract_filename(self.viewController.file_address): self.get_mem_data()})
+                #do not update file_dict if there is not an active file
+                if self.viewController.file_address != "":
+                    self.viewController.file_dict.update({self.viewController.file_address: self.get_mem_data()})
         else:
             messagebox.showwarning("Warning", "Please select a cell to edit.")
 
@@ -225,10 +228,10 @@ class DataGUI:
             self.memory_tree.delete(row)
         # Find the selected file in the list of dictionaries
         for file in self.viewController.file_dict.keys():
-            if file == item_text[0]:
-                # Update the memory tree with instructions from the selected file
-                self.update_memory_tree(self.viewController.file_dict.get(item_text[0]))
-                self.output_wrk_add(f'Active file set to: {item_text[0]}')
-                break
+            #if file == item_text[0]:
+            # Update the memory tree with instructions from the selected file
+            self.update_memory_tree(self.viewController.file_dict.get(item_text[0]))
+            self.output_wrk_add(f'Active file set to: {item_text[0]}')
+            break
 
 

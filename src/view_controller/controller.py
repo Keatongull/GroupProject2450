@@ -66,18 +66,14 @@ class ViewController:
             # the file browser was cancelled
             return
         self.view.clear_wrk_add()
-        
-        # TODO this can be removed and instead checked after we open the file below
-        with open(open_address, 'r') as file:
-            line_count = sum(1 for line in file)
-
-        if line_count > 250:
-            self.view.output_to_console("Error: File contains more than 250 lines")
-            return
 
         file_name = self.extract_filename(open_address)
         codeText = TFM.import_text_from_file(open_address)
         instructions = codeText.split('\n')
+        if len(instructions) > 250:
+            self.view.output_to_console("Error: File contains more than 250 lines")
+            return
+        
         # set the new file_address after import in case any errors occurred
         self.file_address = open_address
         self.view.update_memory_tree(instructions)
@@ -98,6 +94,9 @@ class ViewController:
             TFM.export_text_to_file(save_address, code_text)
             # open the new file
             self.file_address = save_address
+            self.update_file_database(save_address, self.view.get_mem_data())
+            self.view.update_file_tree()
+            self.view.output_wrk_add("Active File " + self.extract_filename(save_address))
             self.view.output_to_console("File Saved. Active File Set To " + self.file_address)
         else:
             # save to active open file

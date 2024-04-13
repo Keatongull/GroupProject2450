@@ -60,3 +60,8 @@ class MemoryTests:
         assert result == False
         result = BranchZero.execute(0)
         assert result == True
+
+    def test_branch_operation():
+        mem = Memory(["+4002", "+4300"])
+        mem.run_instructions()
+        assert mem._instruction_pointer == 2

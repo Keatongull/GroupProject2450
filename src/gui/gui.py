@@ -18,6 +18,7 @@ class DataGUI:
         self.root.title("Data Table GUI")
         self.theme_color = '#0F5132'
         self.off_color = '#FFFFFF'
+        self.item_text = ''
         
         self.load_config()  # Load theme from config file
         self.root['bg'] = self.theme_color
@@ -221,17 +222,17 @@ class DataGUI:
         self.cwd_frame.configure(bg=self.theme_color)
 
     def open_file_selected(self, event=None):
-        selected_item = self.file_tree.selection()
-        item_text = self.file_tree.item(selected_item)['values']
-        # Clear existing entries in the memory tree
-        for row in self.memory_tree.get_children():
-            self.memory_tree.delete(row)
-        # Find the selected file in the list of dictionaries
-        for file in self.viewController.file_dict.keys():
-            #if file == item_text[0]:
-            # Update the memory tree with instructions from the selected file
-            self.update_memory_tree(self.viewController.file_dict.get(item_text[0]))
-            self.output_wrk_add(f'Active file set to: {item_text[0]}')
-            break
+        if self.file_tree.selection():
+            selected_item = self.file_tree.selection()
+            self.item_text = self.file_tree.item(selected_item)['values']
+            # Clear existing entries in the memory tree
+            for row in self.memory_tree.get_children():
+                self.memory_tree.delete(row)
+            # Find the selected file in the list of dictionaries
+                #if file == item_text[0]:
+                # Update the memory tree with instructions from the selected file
+            self.update_memory_tree(self.viewController.file_dict.get(self.item_text[0]))
+            self.output_wrk_add(f'Active file set to: {self.item_text[0]}')
+
 
 

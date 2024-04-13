@@ -45,3 +45,18 @@ class MemoryTests:
         result = Multiply.execute(50, 10)
         assert result == 500
 
+    def test_branchneg_operation(self):
+        result = BranchNeg.execute(50)
+        assert result == False
+        result = BranchNeg.execute(0)
+        assert result == False
+        result = BranchNeg.execute(-50)
+        assert result == True
+
+    def test_branchzero_operation(self):
+        result = BranchZero.execute(50)
+        assert result == False
+        result = BranchZero.execute(-50)
+        assert result == False
+        result = BranchZero.execute(0)
+        assert result == True

@@ -82,7 +82,7 @@ class ViewController:
         self.file_address = open_address
         self.view.update_memory_tree(formatted_instructions)
         self.view.output_wrk_add("Active File " + file_name)
-        self.update_file_database(open_address, formatted_instructions)
+        self.update_file_database(file_name, formatted_instructions)
         self.view.update_file_tree()
 
     def save_button_clicked(self):

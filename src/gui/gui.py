@@ -94,14 +94,15 @@ class DataGUI:
                 self.memory_tree.item(selected_item, values=(current_line, new_value), text=new_value)
                 #do not update file_dict if there is not an active file
                 if self.viewController.file_address != "":
-                    self.viewController.file_dict.update({self.viewController.file_address: self.get_mem_data()})
+                    self.viewController.file_dict.update({self.viewController.extract_filename(self.viewController.file_address): self.get_mem_data()})
+
         else:
             messagebox.showwarning("Warning", "Please select a cell to edit.")
 
     def update_file_tree(self):
         self.file_tree.delete(*self.file_tree.get_children())
         for _key in self.viewController.file_dict.keys():
-            self.file_tree.insert('', 'end', values=self.viewController.extract_filename(_key))
+            self.file_tree.insert('', 'end', values=_key)
 
 
 
@@ -233,6 +234,3 @@ class DataGUI:
                 # Update the memory tree with instructions from the selected file
             self.update_memory_tree(self.viewController.file_dict.get(self.item_text[0]))
             self.output_wrk_add(f'Active file set to: {self.item_text[0]}')
-
-
-

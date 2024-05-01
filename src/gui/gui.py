@@ -7,40 +7,42 @@ sys.path.append(os.path.dirname(SCRIPT_DIR))
 import tkinter as tk
 from tkinter import simpledialog, messagebox
 from tkinter import ttk
-import configparser
 from src.view_controller.controller import ViewController
 from src.memory.memory import Memory
+from src.gui.theme_config import ThemeConfig
 
 class DataGUI:
     def __init__(self, root):
         self.root = root
         self.viewController = ViewController(self)
         self.root.title("Data Table GUI")
-        self.theme_color = '#0F5132'
-        self.off_color = '#FFFFFF'
+        #self.theme_color = '#0F5132'
+        ThemeConfig.theme_color = "#0F5132"
+        #self.off_color = '#FFFFFF'
+        ThemeConfig.off_color = "#FFFFFF"
         self.item_text = ''
         
-        self.load_config()  # Load theme from config file
-        self.root['bg'] = self.theme_color
+        ThemeConfig.load_config()  # Load theme from config file
+        self.root['bg'] = ThemeConfig.theme_color
 
-        self.left_frame = tk.Frame(self.root, bg=self.theme_color)
+        self.left_frame = tk.Frame(self.root, bg=ThemeConfig.theme_color)
         self.left_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=10, pady=10)
-        self.right_frame = tk.Frame(self.root, bg=self.theme_color)
+        self.right_frame = tk.Frame(self.root, bg=ThemeConfig.theme_color)
         self.right_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True, padx=10, pady=10)
 
-        self.cwd_frame = tk.Frame(self.left_frame, bg=self.theme_color)
+        self.cwd_frame = tk.Frame(self.left_frame, bg=ThemeConfig.theme_color)
         self.cwd_frame.pack(anchor="w", padx=5, pady=5)
 
-        self.current_dir_text = tk.Text(self.cwd_frame, height=1, bg=self.off_color, width=119)
+        self.current_dir_text = tk.Text(self.cwd_frame, height=1, bg=ThemeConfig.off_color, width=119)
         self.current_dir_text.pack(fill=tk.X, padx=5)
 
 
         # Data entry references the console
-        self.data_entry = tk.Text(self.left_frame, bg=self.off_color)
+        self.data_entry = tk.Text(self.left_frame, bg=ThemeConfig.off_color)
         self.data_entry.pack(fill=tk.BOTH, expand=True, pady=5)
         self.data_entry.bind("<Return>", self.insert_newline_in_console)
 
-        self.buttons_frame = tk.Frame(self.left_frame, bg=self.theme_color)
+        self.buttons_frame = tk.Frame(self.left_frame, bg=ThemeConfig.theme_color)
         self.buttons_frame.pack(fill=tk.BOTH, expand=True, pady=5)
 
         self.run_button = tk.Button(self.buttons_frame, text="Run", command=self.viewController.run_button_clicked, width=17, height=2)
@@ -53,7 +55,7 @@ class DataGUI:
         self.save_button.grid(row=0, column=3, padx=5, pady=5)
         self.edit_cell_button = tk.Button(self.buttons_frame, text="Edit Memory", command=self.edit_cell, width=17, height=2)
         self.edit_cell_button.grid(row=1, column=0, padx=5, pady=6)
-        self.change_theme_button = tk.Button(self.buttons_frame, text="Change Theme", command=self.change_theme, width=17, height=2)
+        self.change_theme_button = tk.Button(self.buttons_frame, text="Change Theme", command=self.viewController.change_theme_button_clicked, width=17, height=2)
         self.change_theme_button.grid(row=1, column=1, padx=5, pady=5)
         self.exit_button = tk.Button(self.buttons_frame, text="Exit", command=root.destroy, width=17, height=2)
         self.exit_button.grid(row=1, column=2, padx=5, pady=5)
@@ -69,7 +71,6 @@ class DataGUI:
         self.file_tree.heading('Column1', text='Open Files')
         self.file_tree.pack(expand=True, fill=tk.BOTH, padx=20, pady=20, anchor=tk.CENTER)
         self.file_tree.bind("<<TreeviewSelect>>", self.open_file_selected)
-
 
         self.update_memory_tree(["0"] * Memory.MAX_MEMORY_SIZE)
 
@@ -146,81 +147,6 @@ class DataGUI:
         if text is None:
             return ""
         return text
-
-    def change_theme(self):
-        top_level_window = self.root.winfo_toplevel()
-        primary_color = simpledialog.askstring("Change Theme", "Enter the primary color (e.g., #RRGGBB):", parent=top_level_window)
-        off_color = simpledialog.askstring("Change Theme", "Enter the 'off' color (e.g., #RRGGBB):", parent=top_level_window)
-        
-        try:
-            if primary_color:
-                self.root.configure(bg=primary_color)
-                self.left_frame.configure(bg=primary_color)
-                self.right_frame.configure(bg=primary_color)
-                self.buttons_frame.configure(bg=primary_color)
-                self.cwd_frame.configure(bg=primary_color)
-                self.theme_color = primary_color  # Update theme color attribute
-            
-            if off_color:
-                self.off_color = off_color  # Update off color attribute
-            
-            self.apply_theme()  # Apply the theme
-            self.save_config()  # Save theme to config file
-            
-            # Show success message
-            if primary_color and off_color:
-                messagebox.showinfo("Success", f"Theme changed. Primary color: {primary_color}, Off color: {off_color}")
-            elif primary_color:
-                messagebox.showinfo("Success", f"Primary color changed: {primary_color}")
-            elif off_color:
-                messagebox.showinfo("Success", f"Off color changed: {off_color}")
-            else:
-                messagebox.showwarning("No Change", "No color changes applied.")
-        except Exception as e:
-            messagebox.showerror("Error", f"Invalid color or error occurred: {str(e)}")
-
-
-
-    def apply_theme(self):
-        # Apply the theme to the GUI elements
-        self.data_entry.configure(bg=self.off_color)  # Set console background color
-        
-        # Create a style object
-        treeview_style = ttk.Style()
-        # Set the background color for the Treeview widget
-        treeview_style.configure("Treeview", background=self.off_color)
-        self.current_dir_text.configure(bg=self.off_color)
-
-
-
-    def load_config(self):
-        # gets theme from config file
-        self.config = configparser.ConfigParser()
-        try:
-            self.config.read('config.ini')
-            self.theme_color = self.config.get('GUI', 'theme_color', fallback='#0F5132')
-            self.off_color = self.config.get('GUI', 'off_color', fallback='#FFFFFF')  # Load off color from config
-        except Exception as e:
-            print("Error loading config:", e)  # Error handling
-
-    def save_config(self):
-        # saves theme to config file
-        self.config['GUI'] = {'theme_color': self.theme_color, 'off_color': self.off_color}  # Save off color to config
-        try:
-            with open('config.ini', 'w') as configfile:
-                self.config.write(configfile)
-            print("Config saved successfully")
-        except Exception as e:
-            print("Error saving config:", e)  # Error handling
-
-
-    def configure_frames(self):
-        # Configure frame colors
-        self.root.configure(bg=self.theme_color)
-        self.left_frame.configure(bg=self.theme_color)
-        self.right_frame.configure(bg=self.theme_color)
-        self.buttons_frame.configure(bg=self.theme_color)
-        self.cwd_frame.configure(bg=self.theme_color)
 
     def open_file_selected(self, event=None):
         if self.file_tree.selection():

@@ -1,6 +1,7 @@
 from src.memory.memory import Memory, MemoryStatus
 import tkinter as tk
 from src.text_file_manager import TextFileManager as TFM
+from src.gui.theme_config import ThemeConfig
 import os
 
 # from GUI import DataGUI (this line causes a circular import error)
@@ -108,6 +109,8 @@ class ViewController:
             TFM.export_text_to_file(self.file_address, code_text)
             self.view.output_to_console("File Saved to " + self.file_address)
 
+    def change_theme_button_clicked(self):
+        ThemeConfig.change_theme(self.view)
 
     def extract_filename(self, file_path):
         return os.path.basename(file_path)
